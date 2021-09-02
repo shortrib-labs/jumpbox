@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+serial=${1}
+id=star-peacock-$(openssl rand -hex 2)
+fqdn=jumpbox.lab.shortrib.net
+password=$(openssl rand -base64 45)
+network=management-pg
+  
+user_data=$(cat <<USER_DATA | base64 
+#cloud-config
+$(ytt --ignore-unknown-comments -f ${SECRETS_DIR}/vars.yml -f ${PROJECT_DIR}/cloud-init/user-data.yml)
+USER_DATA
+)
+
+options=$(
+  jq -n \
+    --arg instanceId "${id}" \
+    --arg fqdn "${fqdn}" \
+    --arg userdata "${user_data}" \
+    --arg password "${password}" \
+    --arg network "${network}" \
+    "$(cat ${PROJECT_DIR}/options.json)"
+)
+
+echo ${options}
