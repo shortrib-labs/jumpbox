@@ -1,14 +1,27 @@
 #!/usr/bin/env bash
 
-serial=${1}
-id=star-peacock-$(openssl rand -hex 2)
-fqdn=jumpbox.lab.shortrib.net
-password=$(openssl rand -base64 45)
-network=management-pg
-  
+id=$(yq e .id $PARAMS_YAML)-$(openssl rand -hex 2)
+fqdn=jumpbox.$(yq e .domain $PARAMS_YAML)
+password=$(yq e .password $PARAMS_YAML)
+mac_address=$(yq e .mac_address $PARAMS_YAML)
+
+datacenter=$(yq e .vcenter.datacenter $PARAMS_YAML)
+datastore=$(yq e .vcenter.datastore $PARAMS_YAML)
+network=$(yq e .vcenter.network $PARAMS_YAML)
+
+pool=$(yq e .vcenter.resource_pool $PARAMS_YAML)
+image=$(yq e .image $PARAMS_YAML)
+
 user_data=$(cat <<USER_DATA | base64 
 #cloud-config
-$(ytt --ignore-unknown-comments -f ${SECRETS_DIR}/vars.yml -f ${PROJECT_DIR}/cloud-init/user-data.yml)
+$(ytt --ignore-unknown-comments -f ${PROJECT_DIR}/cloud-init --data-value domain=${domain} \
+  --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
+  --data-value microsoft.repository="$(curl --silent https://packages.microsoft.com/config/ubuntu/20.04/prod.list)" \
+  --data-value hashicorp.pgp_key="$(curl --silent https://apt.releases.hashicorp.com/gpg)" \
+  --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
+  --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
+  --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
+  --data-value-file ssh.authorized_keys.crdant="${HOME}/.ssh/id_ed25519.pub")
 USER_DATA
 )
 
@@ -22,4 +35,6 @@ options=$(
     "$(cat ${PROJECT_DIR}/options.json)"
 )
 
-echo ${options}
+govc import.ova --options=<(echo ${options}) --dc ${datacenter} --ds ${datastore} --pool ${pool} ${image}
+govc vm.network.change -vm ${fqdn} -net ${network} -net.address ${mac_address} ethernet-0
+govc vm.power -on ${fqdn}

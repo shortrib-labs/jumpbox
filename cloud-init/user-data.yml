@@ -12,7 +12,7 @@
 # Some additional examples are provided in comments below the default
 # configuration.
 
-fqdn: jumpbox.lab.shortrib.net
+fqdn: #@ "jumpbox.{}".format(data.values.domain)
 
 users:
 - name: crdant
@@ -25,6 +25,20 @@ users:
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   lock_passwd: true
 
+## add microsoft package repositories
+apt:
+  preserve_sources_list: true
+  sources:
+    microsoft:
+      source: #@ data.values.microsoft.repository 
+      key: #@ data.values.microsoft.pgp_key
+    hashicorp:
+      source: #@ data.values.hashicorp.repository 
+      key: #@ data.values.hashicorp.pgp_key
+    tailscale:
+      source: #@ data.values.tailscale.repository
+      key: #@ data.values.tailscale.pgp_key
+
 ## Update apt database and upgrade packages on first boot
 package_update: true
 package_upgrade: true
@@ -34,16 +48,25 @@ packages:
 - ca-certificates
 - curl
 - zsh
+- direnv
 - neovim
-- yq
+- python-is-python3
+- pip
+- packer
+- terraform
+# - msodbcsql17
+# - mssql-tools
+# - unixodbc-dev
+- tailscale
 
 # install snaps on first boot
 snap:
   commands:
   - snap install jq
-  - snap install git-ubuntu
-  - snap install kubectl
-  - snap install helm
+  - snap install yq
+  - snap install git-ubuntu --classic
+  - snap install kubectl --classic
+  - snap install helm --classic
 
 ## write the systemd service file and coredns config
 ## files
