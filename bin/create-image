@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+mkdir -p ${SECRETS_DIR}/image
+echo "#cloud-config" > ${SECRETS_DIR}/image/user-data
+ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/image/user-data.yml -f ${PARAMS_YAML} \
+    --data-value hashed_password="$(yq e .default_password ${PARAMS_YAML} | openssl passwd -6 -stdin)" \
+    --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
+    --data-value microsoft.repository="$(curl --silent https://packages.microsoft.com/config/ubuntu/20.04/prod.list)" \
+    --data-value hashicorp.pgp_key="$(curl --silent https://apt.releases.hashicorp.com/gpg)" \
+    --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
+    --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
+    --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
+  >> ${SECRETS_DIR}/image/user-data
+
+packer build --var-file=${SECRETS_DIR}/jumpbox.pkrvars.hcl ${SOURCE_DIR}/packer/jumpbox-image.pkr.hcl

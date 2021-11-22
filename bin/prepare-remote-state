@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+PROJECT_ID=$(yq e .gcp.project ${PARAMS_YAML})
+
+SERVICE_ACCOUNT=$(yq e .gcp.service-account ${PARAMS_YAML})
+DISPLAY_NAME="Jumpbox setup Terraform remote state accunt"
+gcloud iam service-accounts create --project=${PROJECT_ID} \
+    --display-name "${DISPLAY_NAME}" "${SERVICE_ACCOUNT}"
+
+SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list \
+  --project=${PROJECT_ID} \
+  --filter="displayName:${DISPLAY_NAME}" \
+  --format 'value(email)')
+
+gcloud iam service-accounts keys create ${SECRETS_DIR}/${SERVICE_ACCOUNT}.json \
+    --iam-account ${SERVICE_ACCOUNT_EMAIL}
+
+BUCKET=$(yq e .gcp.bucket ${PARAMS_YAML})
+gsutil mb -p ${PROJECT_ID} gs://${BUCKET}
+gsutil versioning set on gs://${BUCKET}
+gsutil iam ch serviceAccount:${SERVICE_ACCOUNT_EMAIL}:objectAdmin gs://${BUCKET}

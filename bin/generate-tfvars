@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+cat <<TF_VARS >${SECRETS_DIR}/terraform.tfvars
+project_root = "${PROJECT_DIR}"
+
+domain = "$(yq e .domain ${PARAMS_YAML})"
+image = "$(yq e .ubuntu.image ${PARAMS_YAML})"
+
+ssh_key_file = "$(yq e .ssh.public_key ${PARAMS_YAML})"
+
+cpus = $(yq e .server.cpus ${PARAMS_YAML})
+memory = $(yq e .server.memory ${PARAMS_YAML})
+disk = $(yq e .server.disk ${PARAMS_YAML})
+mac_address = "$(yq e .server.mac_address ${PARAMS_YAML})"
+
+vsphere_server   = "$(yq e .vsphere.server ${PARAMS_YAML})"
+vsphere_username = "$(yq e .vsphere.username ${PARAMS_YAML})@shortrib.local"
+vsphere_password = "$(yq e .vsphere.password ${PARAMS_YAML})"
+
+vsphere_datacenter    = "$(yq e .vsphere.datacenter ${PARAMS_YAML})"
+vsphere_cluster       = "$(yq e .vsphere.cluster ${PARAMS_YAML})"
+vsphere_host          = "$(yq e .vsphere.host ${PARAMS_YAML})"
+vsphere_resource_pool = "$(yq e .vsphere.resource_pool ${PARAMS_YAML})"
+vsphere_network       = "$(yq e .vsphere.network ${PARAMS_YAML})"
+vsphere_datastore     = "$(yq e .vsphere.datastore ${PARAMS_YAML})"
+vsphere_folder        = "$(yq e .vsphere.folder ${PARAMS_YAML})"
+TF_VARS

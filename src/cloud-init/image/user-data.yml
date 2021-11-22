@@ -3,6 +3,7 @@
 #cloud-config
 
 # This is the user-data configuration file for cloud-init. By default this sets
+# 
 # up an initial user called "ubuntu" with password "ubuntu", which must be
 # changed at first login. However, many additional actions can be initiated on
 # first boot from this file. The cloud-init documentation has more details:
@@ -12,20 +13,28 @@
 # Some additional examples are provided in comments below the default
 # configuration.
 
-fqdn: #@ "jumpbox.{}".format(data.values.domain)
+# set up autoinstall
 
-users:
-- name: crdant
-  gecos: "Chuck D'Antonio"
-  groups:
-  - users 
-  - adm 
-  - sudo
-  ssh_authorized_keys: #@ data.values.ssh.authorized_keys.crdant
-  sudo: "ALL=(ALL) NOPASSWD:ALL"
-  lock_passwd: true
+#cloud-config
+autoinstall:
+  version: 1
+  early-commands:
+  - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
+  locale: en_US
+  keyboard:
+    layout: us
+  identity:
+    hostname: jumpbox-image
+    username: ubuntu
+    password: #@ data.values.hashed_password
+  ssh:
+    authorized_keys: #@ data.values.ssh.authorized_keys
+    install-server: true
+    allow-pw: false
+  late-commands:
+    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
 
-## add microsoft package repositories
+## add package repositories
 apt:
   preserve_sources_list: true
   sources:
@@ -68,10 +77,3 @@ snap:
   - snap install kubectl --classic
   - snap install helm --classic
 
-## write the systemd service file and coredns config
-## files
-# write_files:
-
-### Run arbitrary commands at rc.local like time
-runcmd:
-- [ chsh, -s, /usr/bin/zsh, crdant ]
