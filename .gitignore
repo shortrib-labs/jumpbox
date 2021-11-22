@@ -3,3 +3,4 @@ secrets/*
 !secrets/README.md
 work/*
 !work/.gitkeep
+src/terraform/.terraform
