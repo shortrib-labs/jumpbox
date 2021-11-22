@@ -4,7 +4,7 @@ variable "project_root" {
 
 variable "boot_wait" {
   type    = string
-  default = "2s"
+  default = "5s"
 }
 
 variable "disk_size" {
@@ -113,8 +113,7 @@ source "vsphere-iso" "outsystems-image" {
   http_directory   = "${var.project_root}/secrets/image"
 
   ssh_username         = "ubuntu"
-  ssh_private_key_file = var.ssh_private_key_file
-  // ssh_password         = var.default_password
+  ssh_password         = var.default_password
   ssh_timeout          = "10m"
 
   vcenter_server      = var.vsphere_server

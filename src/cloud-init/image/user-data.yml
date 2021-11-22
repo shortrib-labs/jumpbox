@@ -30,7 +30,7 @@ autoinstall:
   ssh:
     authorized_keys: #@ data.values.ssh.authorized_keys
     install-server: true
-    allow-pw: false
+    allow-pw: true
   late-commands:
     - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
 
