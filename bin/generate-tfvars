@@ -6,7 +6,7 @@ project_root = "${PROJECT_DIR}"
 domain = "$(yq e .domain ${PARAMS_YAML})"
 image = "$(yq e .ubuntu.image ${PARAMS_YAML})"
 
-ssh_key_file = "$(yq e .ssh.public_key ${PARAMS_YAML})"
+ssh_public_key = "$(yq e '.ssh.authorized_keys[0]' ${PARAMS_YAML})"
 
 cpus = $(yq e .server.cpus ${PARAMS_YAML})
 memory = $(yq e .server.memory ${PARAMS_YAML})
