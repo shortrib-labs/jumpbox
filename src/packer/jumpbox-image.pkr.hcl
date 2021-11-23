@@ -65,7 +65,7 @@ variable "vsphere_datastore" {
   type = string
 }
 
-variable "vsphere_folder" {
+variable "vsphere_content_library" {
   type = string
 }
 
@@ -121,9 +121,13 @@ source "vsphere-iso" "outsystems-image" {
   datacenter          = var.vsphere_datacenter
   cluster             = var.vsphere_cluster
   datastore           = var.vsphere_datastore
-  folder             = var.vsphere_folder
 
-  convert_to_template = true
+  content_library_destination {
+    name    = var.vm_name
+    library = var.vsphere_content_library
+    ovf     = true
+    destroy = true
+  }
 }
 
 build {
