@@ -26,7 +26,7 @@ variable "memory" {
 
 variable "disk" {
   type    = number
-  default = 204800
+  default = "81920"
 }
 
 variable "mac_address" {
@@ -69,12 +69,15 @@ variable "vsphere_resource_pool" {
   type = string
 }
 
+variable "vsphere_content_library" {
+  type = string
+}
 variable "vsphere_folder" {
   type = string
 }
 
 locals {
-  server_name    = "db.${var.domain}"
+  server_name    = "jumpbox.${var.domain}"
   vsphere_folder = "${var.vsphere_datacenter}/vm/${var.vsphere_folder}"
   directories = {
     work = "${var.project_root}/work"
