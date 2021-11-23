@@ -34,7 +34,6 @@ variable "numvcpus" {
 
 variable "vm_name" {
   type    = string
-  default = "jumpbox-image"
 }
 
 variable "default_password" {

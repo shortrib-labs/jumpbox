@@ -5,6 +5,7 @@ project_root = "${PROJECT_DIR}"
 
 domain = "$(yq e .domain ${PARAMS_YAML})"
 image = "$(yq e .ubuntu.image ${PARAMS_YAML})"
+template_name = "$(yq e .template_name ${PARAMS_YAML})"
 
 ssh_public_key = "$(yq e '.ssh.authorized_keys[0]' ${PARAMS_YAML})"
 

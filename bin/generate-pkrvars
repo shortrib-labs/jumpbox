@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cat <<PKRVARS >${SECRETS_DIR}/jumpbox.pkrvars.hcl
+vm_name          = "$(yq e .template_name ${PARAMS_YAML})"
 project_root     = "${PROJECT_DIR}"
 output_directory = "${WORK_DIR}"
 

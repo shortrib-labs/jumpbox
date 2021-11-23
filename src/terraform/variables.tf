@@ -2,7 +2,7 @@ variable "project_root" {
   type = string
 }
 
-variable "image" {
+variable "template_name" {
   type = string
 }
 

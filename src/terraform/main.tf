@@ -31,6 +31,11 @@ data "vsphere_folder" "folder" {
   path = local.vsphere_folder
 }
 
+data "vsphere_virtual_machine" "template" {
+  name          = var.template_name
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
 resource "random_pet" "default_password" {
   length = 4
 }
@@ -71,14 +76,12 @@ resource "vsphere_virtual_machine" "vm" {
     client_device = true
   }
 
-  ovf_deploy {
-    remote_ovf_url       = var.image
-    disk_provisioning    = "thin"
-    ip_protocol          = "IPV4"
-    ip_allocation_policy = "DHCP"
-
-    allow_unverified_ssl_cert = true
-  }
+  clone { 
+    template_uuid = data.vsphere_virtual_machine.template.id
+    customize { 
+      network_interface {}
+    } 
+  } 
 
   vapp {
     properties = {
