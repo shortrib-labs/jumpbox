@@ -125,9 +125,6 @@ source "vsphere-iso" "outsystems-image" {
   folder             = var.vsphere_folder
 
   convert_to_template = true
-  export {
-    output_directory = var.output_directory
-  }
 }
 
 build {
