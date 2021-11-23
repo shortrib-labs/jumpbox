@@ -47,6 +47,10 @@ source "vsphere-iso" "outsystems-image" {
   cluster             = var.vsphere_cluster
   datastore           = var.vsphere_datastore
 
+  configuration_parameters = {
+    "property" = local.property_config
+  }
+
   content_library_destination {
     name    = var.vm_name
     library = var.vsphere_content_library
