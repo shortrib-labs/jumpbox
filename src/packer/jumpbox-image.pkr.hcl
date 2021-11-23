@@ -1,5 +1,9 @@
 locals {
-  property_config = file("${var.project_root}/src/xml/product.xml")
+  directories = {
+    "source"   = "${var.project_root}/source"
+    "work"   = "${var.project_root}/work"
+    "export" = "${var.project_root}/work/${var.vm_name}"
+  }
 }
 
 source "vsphere-iso" "outsystems-image" {
@@ -47,18 +51,22 @@ source "vsphere-iso" "outsystems-image" {
   cluster             = var.vsphere_cluster
   datastore           = var.vsphere_datastore
 
-  configuration_parameters = {
-    "vAppConfig.property" = local.property_config
-  }
+  export {
+    output_directory = local.directories.work
 
-  content_library_destination {
-    name    = var.vm_name
-    library = var.vsphere_content_library
-    ovf     = true
-    destroy = true
+    force  = true
+    images = false
   }
 }
 
 build {
   sources = ["source.vsphere-iso.outsystems-image"]
+
+  post-processor "shell-local" {
+    inline = [ 
+      "sed -i '/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml' ${local.directories.export}/jumpbox-image.ovf",
+      "ovftool ${local.directories.export}/jumpbox-image.ovf ${local.directories.work}/jumpbox-image.ova",
+      "govc library.import ${var.vsphere_content_library} ${local.directories.work}/jumpbox-image.ova"
+    ] 
+  }
 }
