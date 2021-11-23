@@ -48,7 +48,7 @@ source "vsphere-iso" "outsystems-image" {
   datastore           = var.vsphere_datastore
 
   configuration_parameters = {
-    "property" = local.property_config
+    "vAppConfig.property" = local.property_config
   }
 
   content_library_destination {
