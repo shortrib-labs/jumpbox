@@ -64,7 +64,21 @@ build {
 
   post-processor "shell-local" {
     inline = [ 
-      "sed -i '/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml' ${local.directories.export}/jumpbox-image.ovf",
+      "sed -i \"/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml\" ${local.directories.export}/jumpbox-image.ovf"
+    ] 
+    only_on = [ "linux" ]
+  }
+
+  post-processor "shell-local" {
+    inline = [ 
+      "sed -i .bak \"/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml\" ${local.directories.export}/jumpbox-image.ovf"
+    ] 
+    only_on = [ "darwin" ]
+  }
+
+  post-processor "shell-local" {
+    inline = [ 
+      "( cd ${local.directories.export} && openssl sha512 -out jumpbox-image.mf jumpbox-image*.{ovf,vmdk})",
       "ovftool ${local.directories.export}/jumpbox-image.ovf ${local.directories.work}/jumpbox-image.ova",
       "govc library.import ${var.vsphere_content_library} ${local.directories.work}/jumpbox-image.ova"
     ] 
