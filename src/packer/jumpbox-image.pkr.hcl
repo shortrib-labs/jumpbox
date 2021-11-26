@@ -1,6 +1,6 @@
 locals {
   directories = {
-    "source"   = "${var.project_root}/source"
+    "source"   = "${var.project_root}/src"
     "work"   = "${var.project_root}/work"
     "export" = "${var.project_root}/work/${var.vm_name}"
   }
@@ -52,7 +52,7 @@ source "vsphere-iso" "outsystems-image" {
   datastore           = var.vsphere_datastore
 
   export {
-    output_directory = local.directories.work
+    output_directory = local.directories.export
 
     force  = true
     images = false
@@ -64,14 +64,14 @@ build {
 
   post-processor "shell-local" {
     inline = [ 
-      "sed -i \"/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml\" ${local.directories.export}/jumpbox-image.ovf"
+      "sed -i '/<.vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml' ${local.directories.export}/jumpbox-image.ovf"
     ] 
     only_on = [ "linux" ]
   }
 
   post-processor "shell-local" {
     inline = [ 
-      "sed -i .bak \"/<\\/vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml\" ${local.directories.export}/jumpbox-image.ovf"
+      "sed -i .bak '/<.vmw:BootOrderSection>/ r ${local.directories.source}/xml/product.xml' ${local.directories.export}/jumpbox-image.ovf"
     ] 
     only_on = [ "darwin" ]
   }
@@ -80,7 +80,6 @@ build {
     inline = [ 
       "( cd ${local.directories.export} && openssl sha512 -out jumpbox-image.mf jumpbox-image*.{ovf,vmdk})",
       "ovftool ${local.directories.export}/jumpbox-image.ovf ${local.directories.work}/jumpbox-image.ova",
-      "govc library.import ${var.vsphere_content_library} ${local.directories.work}/jumpbox-image.ova"
     ] 
   }
 }

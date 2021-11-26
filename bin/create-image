@@ -3,6 +3,11 @@
 mkdir -p ${SECRETS_DIR}/image
 touch ${SECRETS_DIR}/image/meta-data
 echo "#cloud-config" > ${SECRETS_DIR}/image/user-data
+
+if [[ $(uname) == "Darwin" ]] ; then
+  PATH=/usr/local/opt/openssl@3/bin:${PATH}
+fi
+
 ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/image/user-data.yml -f ${PARAMS_YAML} \
     --data-value hashed_password="$(yq e .default_password ${PARAMS_YAML} | openssl passwd -6 -stdin)" \
     --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
@@ -13,4 +18,4 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/image/user-data.yml -f
     --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
   >> ${SECRETS_DIR}/image/user-data
 
-packer build --var-file=${SECRETS_DIR}/jumpbox.pkrvars.hcl ${SOURCE_DIR}/packer
+packer build --force --var-file=${SECRETS_DIR}/jumpbox.pkrvars.hcl ${SOURCE_DIR}/packer

@@ -9,7 +9,7 @@
     <Label>A Unique Instance ID for this instance</Label>
     <Description>Specifies the instance id.  This is required and used to determine if the machine should take "first boot" actions</Description>
   </Property>
-  <Property ovf:key="hostname" ovf:type="string" ovf:userConfigurable="true" ovf:value="ubuntuguest">
+  <Property ovf:key="hostname" ovf:type="string" ovf:userConfigurable="true" ovf:value="jumpbox">
     <Description>Specifies the hostname for the appliance</Description>
   </Property>
   <Property ovf:key="seedfrom" ovf:type="string" ovf:userConfigurable="true">
