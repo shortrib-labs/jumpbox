@@ -1,4 +1,4 @@
-locals {
+template {
   directories = {
     "source"   = "${var.project_root}/src"
     "work"   = "${var.project_root}/work"
@@ -6,7 +6,7 @@ locals {
   }
 }
 
-source "vsphere-clone" "outsystems-image" {
+source "vsphere-clone" "jumpbox-template" {
   vm_name   = var.vm_name
   template  = var.vsphere_template_name
 
@@ -23,7 +23,7 @@ source "vsphere-clone" "outsystems-image" {
      properties = {
         hostname  = var.vm_name
         password  = var.default_password
-        user-data = base64encode(file("${var.project_root}/secrets/image/user-data"))
+        user-data = base64encode(file("${var.project_root}/secrets/template/user-data"))
      }
    }
 
@@ -40,7 +40,7 @@ source "vsphere-clone" "outsystems-image" {
   ]
   boot_wait        = var.boot_wait
   shutdown_command = "sudo shutdown -P now"
-  http_directory   = "${var.project_root}/secrets/image"
+  http_directory   = "${var.project_root}/secrets/template"
   */
   ssh_username         = "ubuntu"
   ssh_private_key_file = var.ssh_private_key_file
@@ -67,7 +67,7 @@ source "vsphere-clone" "outsystems-image" {
 }
 
 build {
-  sources = ["source.vsphere-clone.outsystems-image"]
+  sources = ["source.vsphere-clone.jumpbox-template"]
 
   provisioner "shell" {
     inline = [

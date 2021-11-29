@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-mkdir -p ${SECRETS_DIR}/image
-touch ${SECRETS_DIR}/image/meta-data
-echo "#cloud-config" > ${SECRETS_DIR}/image/user-data
+mkdir -p ${SECRETS_DIR}/template
+touch ${SECRETS_DIR}/template/meta-data
+echo "#cloud-config" > ${SECRETS_DIR}/template/user-data
 
 if [[ $(uname) == "Darwin" ]] ; then
   PATH=/usr/local/opt/openssl@3/bin:${PATH}
 fi
 
-ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/image/user-data.yml -f ${PARAMS_YAML} \
+ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/template/user-data.yml -f ${PARAMS_YAML} \
     --data-value hashed_password="$(yq e .default_password ${PARAMS_YAML} | openssl passwd -6 -stdin)" \
     --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
     --data-value microsoft.repository="$(curl --silent https://packages.microsoft.com/config/ubuntu/20.04/prod.list)" \
