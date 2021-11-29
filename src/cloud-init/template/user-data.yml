@@ -3,6 +3,7 @@
 #cloud-config
 
 # This is the user-data configuration file for cloud-init. By default this sets
+# 
 # up an initial user called "ubuntu" with password "ubuntu", which must be
 # changed at first login. However, many additional actions can be initiated on
 # first boot from this file. The cloud-init documentation has more details:
@@ -11,21 +12,14 @@
 #
 # Some additional examples are provided in comments below the default
 # configuration.
-
 fqdn: #@ "jumpbox.{}".format(data.values.domain)
+ssh_authorized_keys: #@ data.values.ssh.authorized_keys
 
-users:
-- name: crdant
-  gecos: "Chuck D'Antonio"
-  groups:
-  - users 
-  - adm 
-  - sudo
-  ssh_authorized_keys: #@ data.values.ssh.authorized_keys.crdant
-  sudo: "ALL=(ALL) NOPASSWD:ALL"
-  lock_passwd: true
+## don't require a password change since we just set it
+chpasswd:
+  expire: false
 
-## add microsoft package repositories
+## add package repositories
 apt:
   preserve_sources_list: true
   sources:
@@ -45,6 +39,7 @@ package_upgrade: true
 
 ## Install additional packages on first boot
 packages:
+- open-vm-tools
 - ca-certificates
 - curl
 - zsh
@@ -68,10 +63,3 @@ snap:
   - snap install kubectl --classic
   - snap install helm --classic
 
-## write the systemd service file and coredns config
-## files
-# write_files:
-
-### Run arbitrary commands at rc.local like time
-runcmd:
-- [ chsh, -s, /usr/bin/zsh, crdant ]
