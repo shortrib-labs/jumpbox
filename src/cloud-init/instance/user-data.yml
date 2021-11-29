@@ -13,15 +13,22 @@
 # configuration.
 
 fqdn: #@ "jumpbox.{}".format(data.values.domain)
+ssh_authorized_keys: 
+- #@ data.values.ssh.authorized_key
+
+chpasswd:
+  expire: true
 
 users:
+- default
 - name: crdant
   gecos: "Chuck D'Antonio"
   groups:
   - users 
   - adm 
   - sudo
-  ssh_authorized_keys: #@ data.values.ssh.authorized_keys.crdant
+  ssh_import_id: 
+  - gh:crdant
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   lock_passwd: true
 

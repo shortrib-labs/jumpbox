@@ -27,13 +27,14 @@ data "vsphere_network" "network" {
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
 
-data "vsphere_folder" "folder" {
-  path = local.vsphere_folder
+data "vsphere_content_library" "library" {
+  name = var.vsphere_content_library
 }
 
-data "vsphere_virtual_machine" "template" {
-  name          = var.template_name
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+data "vsphere_content_library_item" "template" {
+  name       = var.template_name
+  library_id = data.vsphere_content_library.library.id
+  type       = "ovf"
 }
 
 resource "random_pet" "default_password" {
@@ -47,11 +48,9 @@ locals {
   DATA
 }
 
-resource "vsphere_virtual_machine" "vm" {
+resource "vsphere_virtual_machine" "jumpbox" {
   name             = local.server_name
-  datacenter_id    = data.vsphere_datacenter.datacenter.id
   datastore_id     = data.vsphere_datastore.datastore.id
-  host_system_id   = data.vsphere_host.host.id
   resource_pool_id = data.vsphere_resource_pool.resource_pool.id
   folder           = var.vsphere_folder
 
@@ -76,19 +75,23 @@ resource "vsphere_virtual_machine" "vm" {
     client_device = true
   }
 
-  clone { 
-    template_uuid = data.vsphere_virtual_machine.template.id
-    customize { 
-      network_interface {}
-    } 
-  } 
+  clone {
+    template_uuid = data.vsphere_content_library_item.template.id
+  }
 
   vapp {
     properties = {
-      "hostname"  = local.server_name
-      "password"  = random_pet.default_password.id
-      "user-data" = base64encode(local.user_data)
+      "instance-id" = "id-ovf"
+      "hostname"    = local.server_name
+      "password"    = random_pet.default_password.id
+      "user-data"   = base64encode(local.user_data)
     }
+  }
+
+  extra_config = {
+    "isolation.tools.copy.disable"         = false
+    "isolation.tools.paste.disable"        = false
+    "isolation.tools.SetGUIOptions.enable" = true
   }
 }
 

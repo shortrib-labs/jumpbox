@@ -12,11 +12,7 @@ data "carvel_ytt" "user_data" {
   ]
   values = {
     "domain" = var.domain
-
-    "microsoft.pgp_key"    = data.http.microsoft_key.body,
-    "microsoft.repository"  = data.http.microsoft_list.body,
-
-    "ssh.authorized_keys.crdant" = var.ssh_public_key
+    "ssh.authorized_key" = var.ssh_public_key
   }
 
   ignore_unknown_comments = true

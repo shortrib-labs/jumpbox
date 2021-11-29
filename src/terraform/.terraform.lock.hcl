@@ -4,6 +4,7 @@
 provider "registry.terraform.io/hashicorp/http" {
   version = "2.1.0"
   hashes = [
+    "h1:GYoVrTtiSAE3AlP1fad3fFmHoPaXAPhm/DJyMcVCwZA=",
     "h1:HmUcHqc59VeHReHD2SEhnLVQPUKHKTipJ8Jxq67GiDU=",
     "zh:03d82dc0887d755b8406697b1d27506bc9f86f93b3e9b4d26e0679d96b802826",
     "zh:0704d02926393ddc0cfad0b87c3d51eafeeae5f9e27cc71e193c141079244a22",
@@ -41,6 +42,7 @@ provider "registry.terraform.io/hashicorp/random" {
   version = "3.1.0"
   hashes = [
     "h1:BZMEPucF+pbu9gsPk0G0BHx7YP04+tKdq2MrRDF1EDM=",
+    "h1:rKYu5ZUbXwrLG1w81k7H3nce/Ys6yAxXhWcbtk36HjY=",
     "zh:2bbb3339f0643b5daa07480ef4397bd23a79963cc364cdfbb4e86354cb7725bc",
     "zh:3cd456047805bf639fbf2c761b1848880ea703a054f76db51852008b11008626",
     "zh:4f251b0eda5bb5e3dc26ea4400dba200018213654b69b4a5f96abee815b4f5ff",
@@ -59,6 +61,7 @@ provider "registry.terraform.io/hashicorp/vsphere" {
   version = "2.0.2"
   hashes = [
     "h1:/9qlE9Ni7mhl3cTHLhmYg1AFuyBnXqie53Q5Ujor6oU=",
+    "h1:6itOE0pkly17XTCxm/i2D3VCTocsofjcrHONl57xZFU=",
     "zh:0b72856d2a89b118adf64dcfc75a0b0f7d8875e9872c637a9a0549d4a3dd9383",
     "zh:2cf50f17464feeac60039f4d36656835895260798d4d9167a1ff2d4e1e464dce",
     "zh:39d5f1c99bd4024d88b95892711f234afeb2b83700cdbd3df68a60c6b3bb0ac7",
@@ -77,6 +80,7 @@ provider "registry.terraform.io/vmware-tanzu/carvel" {
   version = "0.10.0"
   hashes = [
     "h1:REVx8A58FyQcb6vnXekDJOy6MRZ2oo8vqZXi0OykmtA=",
+    "h1:eGcgGzCdQWPuVHNC99VK1OEs2t28NR9TP1Xgun4dMAI=",
     "zh:0377aca10c825ca2ab4a42a706bad4fe87c9d60ba8528a3e17090483c28e1cc2",
     "zh:1c0d6f5f3d0eef92de0724a8b02e8fed4cd223a78479feaca7849127be327d41",
     "zh:27d7c8eef17934c783e4394dbc6f4c15349bf1820102c705b5d57747aa55d3bf",

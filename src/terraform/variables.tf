@@ -69,6 +69,10 @@ variable "vsphere_resource_pool" {
   type = string
 }
 
+variable "vsphere_content_library" {
+  type = string
+}
+
 variable "vsphere_folder" {
   type = string
 }
