@@ -36,7 +36,15 @@ variable "vm_name" {
   type    = string
 }
 
+variable "domain" {
+  type    = string
+}
+
 variable "default_password" {
+  type = string
+}
+
+variable "ssh_private_key_file" {
   type = string
 }
 
@@ -63,6 +71,10 @@ variable "vsphere_cluster" {
 
 variable "vsphere_datastore" {
   type = string
+}
+
+variable "vsphere_template_name" {
+  type    = string
 }
 
 variable "vsphere_content_library" {

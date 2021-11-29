@@ -12,27 +12,12 @@
 #
 # Some additional examples are provided in comments below the default
 # configuration.
+fqdn: #@ "jumpbox.{}".format(data.values.domain)
+ssh_authorized_keys: #@ data.values.ssh.authorized_keys
 
-# set up autoinstall
-
-#cloud-config
-autoinstall:
-  version: 1
-  early-commands:
-  - systemctl stop ssh # otherwise packer tries to connect and exceed max attempts
-  locale: en_US
-  keyboard:
-    layout: us
-  identity:
-    hostname: jumpbox-image
-    username: ubuntu
-    password: #@ data.values.hashed_password
-  ssh:
-    authorized_keys: #@ data.values.ssh.authorized_keys
-    install-server: true
-    allow-pw: true
-  late-commands:
-    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
+## don't require a password change since we just set it
+chpasswd:
+  expire: false
 
 ## add package repositories
 apt:
@@ -54,6 +39,7 @@ package_upgrade: true
 
 ## Install additional packages on first boot
 packages:
+- open-vm-tools
 - ca-certificates
 - curl
 - zsh
