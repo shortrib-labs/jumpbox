@@ -63,3 +63,5 @@ snap:
   - snap install kubectl --classic
   - snap install helm --classic
 
+runcmd:
+        - curl -L https://carvel.dev/install.sh | bash
