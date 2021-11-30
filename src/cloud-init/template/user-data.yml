@@ -43,6 +43,7 @@ packages:
 - ca-certificates
 - curl
 - zsh
+- xz-utils
 - direnv
 - neovim
 - python-is-python3

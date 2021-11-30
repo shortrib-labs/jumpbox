@@ -84,4 +84,9 @@ build {
     ]
   }
 
+  provisioner "shell" {
+    scripts = [
+      "${local.directories.source}/scripts/install-keybase.sh"
+    ]
+  }
 }
