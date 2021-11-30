@@ -53,6 +53,7 @@ packages:
 # - msodbcsql17
 # - mssql-tools
 # - unixodbc-dev
+- powershell
 - tailscale
 
 # install snaps on first boot
