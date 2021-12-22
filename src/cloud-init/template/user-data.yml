@@ -71,3 +71,5 @@ snap:
 
 runcmd:
   - curl -L https://carvel.dev/install.sh | bash
+  - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
+  - chmod 755 /usr/local/bin/mc
