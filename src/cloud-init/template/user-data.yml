@@ -32,6 +32,9 @@ apt:
     tailscale:
       source: #@ data.values.tailscale.repository
       key: #@ data.values.tailscale.pgp_key
+    github:
+      source: #@ data.values.github.repository
+      key: #@ data.values.github.pgp_key
 
 ## Update apt database and upgrade packages on first boot
 package_update: true
@@ -55,6 +58,7 @@ packages:
 # - unixodbc-dev
 - powershell
 - tailscale
+- gh
 
 # install snaps on first boot
 snap:
@@ -66,4 +70,4 @@ snap:
   - snap install helm --classic
 
 runcmd:
-        - curl -L https://carvel.dev/install.sh | bash
+  - curl -L https://carvel.dev/install.sh | bash
