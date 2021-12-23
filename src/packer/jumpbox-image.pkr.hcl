@@ -1,4 +1,4 @@
-template {
+locals {
   directories = {
     "source"   = "${var.project_root}/src"
     "work"   = "${var.project_root}/work"
@@ -46,11 +46,6 @@ source "vsphere-clone" "jumpbox-template" {
   ssh_private_key_file = var.ssh_private_key_file
   ssh_timeout          = "10m"
  
-  ssh_bastion_host       = "router.lab.shortrib.net" 
-  ssh_bastion_username   = "arceus"
-  ssh_bastion_agent_auth = true
-  ssh_bastion_private_key_file = "~/.ssh/id_router"
-
   vcenter_server      = var.vsphere_server
   username            = var.vsphere_username
   password            = var.vsphere_password
