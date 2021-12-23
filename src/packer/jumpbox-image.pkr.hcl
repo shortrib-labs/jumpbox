@@ -46,11 +46,6 @@ source "vsphere-clone" "jumpbox-template" {
   ssh_private_key_file = var.ssh_private_key_file
   ssh_timeout          = "10m"
  
-  ssh_bastion_host       = "router.lab.shortrib.net" 
-  ssh_bastion_username   = "arceus"
-  ssh_bastion_agent_auth = true
-  ssh_bastion_private_key_file = "~/.ssh/id_router"
-
   vcenter_server      = var.vsphere_server
   username            = var.vsphere_username
   password            = var.vsphere_password
@@ -58,12 +53,14 @@ source "vsphere-clone" "jumpbox-template" {
   cluster             = var.vsphere_cluster
   datastore           = var.vsphere_datastore
 
-  content_library_destination {
-    name    = var.vm_name
-    library = var.vsphere_content_library
-    ovf     = true
-    destroy = true
+  export {
+    name  = var.vm_name
+    images = false
+    force = true
+
+    output_directory = var.output_directory
   }
+  
 }
 
 build {
