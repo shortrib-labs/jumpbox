@@ -48,6 +48,10 @@ variable "ssh_private_key_file" {
   type = string
 }
 
+variable "user_data" {
+  type    = string
+}
+
 variable "vsphere_username" {
   type    = string
   default = "administrator@vsphere.local"
