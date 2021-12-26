@@ -23,7 +23,11 @@ source "vsphere-iso" "jumpbox-template" {
     disk_size             = var.disk_size
     disk_thin_provisioned = true
   }
-  network      = var.vsphere_network
+  network_adapters {
+    network      = var.vsphere_network
+    network_card = "vmxnet3"
+  }
+
 
   cd_content   = local.cloud_config
   cd_label     = "cidata"
