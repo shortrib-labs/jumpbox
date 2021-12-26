@@ -8,7 +8,6 @@ locals {
 
 source "vsphere-clone" "jumpbox-template" {
   vm_name   = var.vm_name
-  template  = var.vsphere_template_name
 
   CPUs                 = var.numvcpus
   RAM                  = var.memsize
