@@ -1,4 +1,4 @@
-locals 
+locals {
   directories = {
     "source"   = "${var.project_root}/src"
     "work"   = "${var.project_root}/work"
