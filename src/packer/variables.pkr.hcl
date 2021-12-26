@@ -81,10 +81,6 @@ variable "vsphere_network" {
   type = string
 }
 
-variable "vsphere_template_name" {
-  type    = string
-}
-
 variable "output_directory" {
   type = string
 }
