@@ -4,10 +4,17 @@ locals {
     "work"   = "${var.project_root}/work"
     "export" = "${var.project_root}/work/${var.vm_name}"
   }
+  cloud_config = {
+    "/meta-data" = ""
+    "/user-data" = var.user-data
+  }
 }
 
-source "vsphere-clone" "jumpbox-template" {
+source "vsphere-iso" "jumpbox-template" {
   vm_name   = var.vm_name
+
+  iso_url      = var.image
+  iso_checksum = var.image_checksum
 
   CPUs                 = var.numvcpus
   RAM                  = var.memsize
@@ -18,15 +25,9 @@ source "vsphere-clone" "jumpbox-template" {
   }
   network      = var.vsphere_network
 
-  vapp {
-     properties = {
-        hostname  = var.vm_name
-        password  = var.default_password
-        user-data = base64encode(var.user_data)
-     }
-   }
+  cd_content   = local.cloud_config
+  cd_label     = "cidata"
 
-  /*
   boot_command     = [
     "<esc><esc><esc>",
     "<enter><wait>",
@@ -39,8 +40,8 @@ source "vsphere-clone" "jumpbox-template" {
   ]
   boot_wait        = var.boot_wait
   shutdown_command = "sudo shutdown -P now"
-  http_directory   = "${var.project_root}/secrets/template"
-  */
+  shutdown_command = "echo '${var.default_password}' | sudo -S -E shutdown -P now"
+
   ssh_username         = "ubuntu"
   ssh_private_key_file = var.ssh_private_key_file
   ssh_timeout          = "10m"
