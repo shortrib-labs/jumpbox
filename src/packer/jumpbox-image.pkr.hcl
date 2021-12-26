@@ -6,7 +6,7 @@ locals {
   }
   cloud_config = {
     "/meta-data" = ""
-    "/user-data" = var.user-data
+    "/user-data" = var.user_data
   }
 }
 
@@ -63,7 +63,7 @@ source "vsphere-iso" "jumpbox-template" {
 }
 
 build {
-  sources = ["source.vsphere-clone.jumpbox-template"]
+  sources = ["source.vsphere-iso.jumpbox-template"]
 
   provisioner "shell" {
     inline = [
