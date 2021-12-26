@@ -1,4 +1,4 @@
-locals {
+locals 
   directories = {
     "source"   = "${var.project_root}/src"
     "work"   = "${var.project_root}/work"
@@ -39,7 +39,6 @@ source "vsphere-iso" "jumpbox-template" {
     "<enter>"
   ]
   boot_wait        = var.boot_wait
-  shutdown_command = "sudo shutdown -P now"
   shutdown_command = "echo '${var.default_password}' | sudo -S -E shutdown -P now"
 
   ssh_username         = "ubuntu"
