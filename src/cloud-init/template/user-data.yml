@@ -24,22 +24,12 @@ autoinstall:
   storage:
     layout:
       name: lvm
-  network:
-    network:
-      version: 2
-      ethernets:
-        id0: 
-          match: 
-            name: en*
-          dhcp4: yes 
-          dhcp-identifier: mac
   ssh:
     install-server: yes
     authorized-keys: #@ data.values.ssh.authorized_keys
   early-commands:
   - sudo systemctl stop ssh
   late-commands:
-  - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
   - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
 
 user-data:
