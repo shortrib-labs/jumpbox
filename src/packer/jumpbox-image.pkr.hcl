@@ -14,7 +14,6 @@ source "vsphere-iso" "jumpbox-template" {
   vm_name   = var.vm_name
 
   iso_url      = var.image
-  iso_checksum = var.image_checksum
 
   firmware      = "efi-secure"
   guest_os_type = "ubuntu64Guest"
