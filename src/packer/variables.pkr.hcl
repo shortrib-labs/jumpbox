@@ -14,12 +14,10 @@ variable "disk_size" {
 
 variable "image" {
   type    = string
-  default = "https://releases.ubuntu.com/20.04/ubuntu-20.04.3-live-server-amd64.iso"
 }
 
 variable "image_checksum" {
   type    = string
-  default = "f8e3086f3cea0fb3fefb29937ab5ed9d19e767079633960ccb50e76153effc98"
 }
 
 variable "memsize" {
