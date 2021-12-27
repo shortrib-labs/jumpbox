@@ -76,6 +76,8 @@ build {
       "cloud-init status --wait",
       "sudo cloud-init clean",
       "sudo cloud-init clean -l",
+      "apt list --installed",
+      "snap list"
     ]
   }
 
