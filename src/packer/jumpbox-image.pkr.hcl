@@ -38,7 +38,7 @@ source "vsphere-iso" "jumpbox-template" {
     "<esc><wait>",
     "linux /install/vmlinuz --- autoinstall ds=\"nocloud\"",
     "<enter><wait>",
-    "initrd /install/initrd",
+    "initrd /install/initrd.gz",
     "<enter><wait>",
     "boot",
     "<enter>"
