@@ -74,15 +74,8 @@ build {
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
-      "cloud-init analyze blame -i /var/log/cloud-init.log",
-      "echo before",
-      "find /var/lib/cloud -ls",
       "sudo cloud-init clean",
       "sudo cloud-init clean -l",
-      "echo after",
-      "find /var/lib/cloud -ls",
-      "apt list --installed",
-      "snap list"
     ]
   }
 
