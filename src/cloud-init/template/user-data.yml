@@ -31,8 +31,8 @@ autoinstall:
         id0: 
           match: 
             name: en*
-              dhcp4: yes 
-              dhcp-identifier: mac
+          dhcp4: yes 
+          dhcp-identifier: mac
   ssh:
     install-server: yes
     authorized-keys: #@ data.values.ssh.authorized_keys
