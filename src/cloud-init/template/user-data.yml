@@ -23,7 +23,7 @@ autoinstall:
     layout: us
   storage:
     layout:
-      name: direct
+      name: lvm
   ssh:
     install-server: yes
     authorized-keys: #@ data.values.ssh.authorized_keys
