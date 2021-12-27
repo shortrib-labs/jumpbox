@@ -11,4 +11,3 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f 
     --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
     --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
   > ${WORK_DIR}/params.yaml
-

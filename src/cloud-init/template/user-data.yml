@@ -31,8 +31,7 @@ autoinstall:
           dhcp4: yes
   ssh:
     install-server: yes
-    authorized-keys:
-    - #@ data.values.ssh.authorized_key
+    authorized-keys: #@ data.values.ssh.authorized_keys
   late-commands:
   - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
   - curtin in-target --target=/target -- chmod 440 /etc/sudoers.d/arceus
