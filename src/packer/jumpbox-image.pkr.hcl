@@ -34,14 +34,13 @@ source "vsphere-iso" "jumpbox-template" {
   cd_content   = local.cloud_config
   cd_label     = "cidata"
 
-  boot_command     = [
-    "<esc><esc><esc>",
+  boot_command = [
+    "<esc><wait>",
+    "linux /casper/vmlinuz --- autoinstall ds=\"nocloud\"",
     "<enter><wait>",
-    "/casper/vmlinuz ",
-    "root=/dev/sr0 ",
-    "initrd=/casper/initrd ",
-    "autoinstall ",
-    "ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+    "initrd /casper/initrd",
+    "<enter><wait>",
+    "boot",
     "<enter>"
   ]
   boot_wait        = var.boot_wait
