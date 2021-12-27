@@ -27,7 +27,7 @@ autoinstall:
     network:
       version: 2
       ethernets:
-        ens192:
+        enp0s3:
           dhcp4: yes
   ssh:
     install-server: yes
