@@ -12,58 +12,80 @@
 #
 # Some additional examples are provided in comments below the default
 # configuration.
-fqdn: #@ "jumpbox.{}".format(data.values.domain)
-ssh_authorized_keys: #@ data.values.ssh.authorized_keys
+autoinstall:
+  version: 1
+  identity:
+    hostname: jumpbox
+    username: arceus
+    password: #@ data.values.hashed_password
+ locale: en_US
+  keyboard:
+    layout: us
+  network:
+    network:
+      version: 2
+      ethernets:
+        ens192:
+          dhcp4: yes
+  ssh:
+    install-server: yes
+    authorized-keys: #@ data.values.ssh.authorized_keys
+  late-commands:
+  - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
 
-## don't require a password change since we just set it
-chpasswd:
-  expire: false
+user-data:
+  fqdn: #@ "jumpbox.{}".format(data.values.domain)
+  ssh_authorized_keys: #@ data.values.ssh.authorized_keys
 
-## add package repositories
-apt:
-  preserve_sources_list: true
-  sources:
-    microsoft:
-      source: #@ data.values.microsoft.repository 
-      key: #@ data.values.microsoft.pgp_key
-    hashicorp:
-      source: #@ data.values.hashicorp.repository 
-      key: #@ data.values.hashicorp.pgp_key
-    tailscale:
-      source: #@ data.values.tailscale.repository
-      key: #@ data.values.tailscale.pgp_key
+  ## don't require a password change since we just set it
+  chpasswd:
+    expire: false
 
-## Update apt database and upgrade packages on first boot
-package_update: true
-package_upgrade: true
+  ## add package repositories
+  apt:
+    preserve_sources_list: true
+    sources:
+      microsoft:
+        source: #@ data.values.microsoft.repository 
+        key: #@ data.values.microsoft.pgp_key
+      hashicorp:
+        source: #@ data.values.hashicorp.repository 
+        key: #@ data.values.hashicorp.pgp_key
+      tailscale:
+        source: #@ data.values.tailscale.repository
+        key: #@ data.values.tailscale.pgp_key
 
-## Install additional packages on first boot
-packages:
-- open-vm-tools
-- ca-certificates
-- curl
-- zsh
-- xz-utils
-- direnv
-- neovim
-- python-is-python3
-- pip
-- packer
-- terraform
-# - msodbcsql17
-# - mssql-tools
-# - unixodbc-dev
-- powershell
-- tailscale
+  ## Update apt database and upgrade packages on first boot
+  package_update: true
+  package_upgrade: true
 
-# install snaps on first boot
-snap:
-  commands:
-  - snap install jq
-  - snap install yq
-  - snap install git-ubuntu --classic
-  - snap install kubectl --classic
-  - snap install helm --classic
+  ## Install additional packages on first boot
+  packages:
+  - open-vm-tools
+  - ca-certificates
+  - curl
+  - zsh
+  - xz-utils
+  - direnv
+  - neovim
+  - python-is-python3
+  - pip
+  - packer
+  - terraform
+  # - msodbcsql17
+  # - mssql-tools
+  # - unixodbc-dev
+  - powershell
+  - tailscale
 
-runcmd:
-- curl -L https://carvel.dev/install.sh | bash
+  # install snaps on first boot
+  snap:
+    commands:
+    - snap install jq
+    - snap install yq
+    - snap install git-ubuntu --classic
+    - snap install kubectl --classic
+    - snap install helm --classic
+
+  runcmd:
+  - curl -L https://carvel.dev/install.sh | bash
