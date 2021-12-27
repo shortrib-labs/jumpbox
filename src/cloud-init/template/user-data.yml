@@ -28,9 +28,11 @@ autoinstall:
     network:
       version: 2
       ethernets:
-        ens192:
-          dhcp4: yes 
-          dhcp-identifier: mac
+        id0: 
+          match: 
+            name: en*
+              dhcp4: yes 
+              dhcp-identifier: mac
   ssh:
     install-server: yes
     authorized-keys: #@ data.values.ssh.authorized_keys
