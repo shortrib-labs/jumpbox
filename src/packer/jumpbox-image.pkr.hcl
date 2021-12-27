@@ -36,9 +36,9 @@ source "vsphere-iso" "jumpbox-template" {
 
   boot_command = [
     "<esc><wait>",
-    "linux /install/vmlinuz --- autoinstall ds=\"nocloud\"",
+    "linux /casper/vmlinuz --- autoinstall ds=\"nocloud\"",
     "<enter><wait>",
-    "initrd /install/initrd.gz",
+    "initrd /casper/initrd",
     "<enter><wait>",
     "boot",
     "<enter>"
@@ -46,7 +46,7 @@ source "vsphere-iso" "jumpbox-template" {
   boot_wait        = var.boot_wait
   shutdown_command = "echo '${var.default_password}' | sudo -S -E shutdown -P now"
 
-  ssh_username         = "ubuntu"
+  ssh_username         = "arceus"
   ssh_private_key_file = var.ssh_private_key_file
   ssh_timeout          = "10m"
  
