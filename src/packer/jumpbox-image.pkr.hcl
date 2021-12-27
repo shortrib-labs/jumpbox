@@ -16,6 +16,9 @@ source "vsphere-iso" "jumpbox-template" {
   iso_url      = var.image
   iso_checksum = var.image_checksum
 
+  firmware      = "efi-secure"
+  guest_os_type = "ubuntu64Guest"
+  
   CPUs                 = var.numvcpus
   RAM                  = var.memsize
   disk_controller_type = ["pvscsi"]
@@ -27,7 +30,6 @@ source "vsphere-iso" "jumpbox-template" {
     network      = var.vsphere_network
     network_card = "vmxnet3"
   }
-
 
   cd_content   = local.cloud_config
   cd_label     = "cidata"
