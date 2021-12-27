@@ -36,9 +36,9 @@ source "vsphere-iso" "jumpbox-template" {
 
   boot_command = [
     "<esc><wait>",
-    "linux /casper/vmlinuz --- autoinstall ds=\"nocloud\"",
+    "linux /install/vmlinuz --- autoinstall ds=\"nocloud\"",
     "<enter><wait>",
-    "initrd /casper/initrd",
+    "initrd /install/initrd",
     "<enter><wait>",
     "boot",
     "<enter>"
