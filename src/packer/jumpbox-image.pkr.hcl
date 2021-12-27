@@ -14,7 +14,7 @@ source "vsphere-iso" "jumpbox-template" {
   vm_name   = var.vm_name
 
   iso_url      = var.image
-   iso_checksum = var.image_checksum
+  iso_checksum = var.image_checksum
 
   firmware      = "efi-secure"
   guest_os_type = "ubuntu64Guest"
@@ -24,6 +24,7 @@ source "vsphere-iso" "jumpbox-template" {
   disk_controller_type = ["pvscsi"]
   storage {
     disk_size             = var.disk_size
+    disk_controller_index = 0
     disk_thin_provisioned = true
   }
   network_adapters {
