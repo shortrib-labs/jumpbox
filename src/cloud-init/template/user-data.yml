@@ -18,22 +18,6 @@ autoinstall:
     hostname: jumpbox
     username: arceus
     password: #@ data.values.hashed_password
-  early-commands:
-  - sudo systemctl stop ssh
-  locale: en_US
-  keyboard:
-    layout: us
-  network:
-    network:
-      version: 2
-      ethernets:
-        enp0s3:
-          dhcp4: yes
-  ssh:
-    install-server: yes
-    authorized-keys: #@ data.values.ssh.authorized_keys
-  late-commands:
-  - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
 
 user-data:
   fqdn: #@ "jumpbox.{}".format(data.values.domain)
