@@ -18,14 +18,14 @@ autoinstall:
     hostname: jumpbox
     username: arceus
     password: #@ data.values.hashed_password
- locale: en_US
+  locale: en_US
   keyboard:
     layout: us
   network:
     network:
       version: 2
       ethernets:
-        ens192:
+        enp0s3:
           dhcp4: yes
   ssh:
     install-server: yes
