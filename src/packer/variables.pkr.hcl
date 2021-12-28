@@ -42,6 +42,14 @@ variable "ssh_private_key_file" {
   type = string
 }
 
+variable "user_data" {
+  type = string
+}
+
+variable "output_directory" {
+  type = string
+}
+
 variable "vsphere_username" {
   type    = string
   default = "administrator@vsphere.local"
@@ -68,9 +76,5 @@ variable "vsphere_datastore" {
 }
 
 variable "vsphere_network" {
-  type = string
-}
-
-variable "output_directory" {
   type = string
 }
