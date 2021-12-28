@@ -27,10 +27,14 @@ autoinstall:
   ssh:
     install-server: yes
     authorized-keys: #@ data.values.ssh.authorized_keys
+  packages:
+  - open-vm-tools
   early-commands:
   - sudo systemctl stop ssh
   late-commands:
   - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
+  - rm -rf /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
+  - rm -rf /etc/cloud/cloud.cfg.d/99-installer.cfg
 
 user-data:
   fqdn: #@ "jumpbox.{}".format(data.values.domain)
@@ -59,7 +63,6 @@ user-data:
 
   ## Install additional packages on first boot
   packages:
-  - open-vm-tools
   - ca-certificates
   - curl
   - zsh
