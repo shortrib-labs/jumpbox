@@ -12,11 +12,7 @@ variable "disk_size" {
   default = "81920"
 }
 
-variable "image" {
-  type    = string
-}
-
-variable "image_checksum" {
+variable "base_template" {
   type    = string
 }
 
@@ -46,10 +42,6 @@ variable "ssh_private_key_file" {
   type = string
 }
 
-variable "user_data" {
-  type    = string
-}
-
 variable "vsphere_username" {
   type    = string
   default = "administrator@vsphere.local"
@@ -72,6 +64,9 @@ variable "vsphere_cluster" {
 }
 
 variable "vsphere_datastore" {
+  type = string
+}
+variable "vsphere_content_library" {
   type = string
 }
 

@@ -12,81 +12,58 @@
 #
 # Some additional examples are provided in comments below the default
 # configuration.
-autoinstall:
-  version: 1
-  identity:
-    hostname: jumpbox
-    username: arceus
-    password: #@ data.values.hashed_password
-  locale: en_US
-  keyboard:
-    layout: us
-  storage:
-    layout:
-      name: direct
-  ssh:
-    install-server: yes
-    authorized-keys: #@ data.values.ssh.authorized_keys
-  packages:
-  - open-vm-tools
-  early-commands:
-  - sudo systemctl stop ssh
-  late-commands:
-  - echo 'arceus ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/arceus
-  - rm -rf /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
-  - rm -rf /etc/cloud/cloud.cfg.d/99-installer.cfg
+fqdn: #@ "jumpbox.{}".format(data.values.domain)
+ssh_authorized_keys: #@ data.values.ssh.authorized_keys
 
-user-data:
-  fqdn: #@ "jumpbox.{}".format(data.values.domain)
+## don't require a password change since we just set it
+chpasswd:
+  expire: false
 
-  ## don't require a password change since we just set it
-  chpasswd:
-    expire: false
+## add package repositories
+apt:
+  preserve_sources_list: true
+  sources:
+    microsoft:
+      source: #@ data.values.microsoft.repository 
+      key: #@ data.values.microsoft.pgp_key
+    hashicorp:
+      source: #@ data.values.hashicorp.repository 
+      key: #@ data.values.hashicorp.pgp_key
+    tailscale:
+      source: #@ data.values.tailscale.repository
+      key: #@ data.values.tailscale.pgp_key
 
-  ## add package repositories
-  apt:
-    preserve_sources_list: true
-    sources:
-      microsoft:
-        source: #@ data.values.microsoft.repository 
-        key: #@ data.values.microsoft.pgp_key
-      hashicorp:
-        source: #@ data.values.hashicorp.repository 
-        key: #@ data.values.hashicorp.pgp_key
-      tailscale:
-        source: #@ data.values.tailscale.repository
-        key: #@ data.values.tailscale.pgp_key
+## Update apt database and upgrade packages on first boot
+package_update: true
+package_upgrade: true
 
-  ## Update apt database and upgrade packages on first boot
-  package_update: true
-  package_upgrade: true
+## Install additional packages on first boot
+packages:
+- open-vm-tools
+- ca-certificates
+- curl
+- zsh
+- xz-utils
+- direnv
+- neovim
+- python-is-python3
+- pip
+- packer
+- terraform
+# - msodbcsql17
+# - mssql-tools
+# - unixodbc-dev
+- powershell
+- tailscale
 
-  ## Install additional packages on first boot
-  packages:
-  - ca-certificates
-  - curl
-  - zsh
-  - xz-utils
-  - direnv
-  - neovim
-  - python-is-python3
-  - pip
-  - packer
-  - terraform
-  # - msodbcsql17
-  # - mssql-tools
-  # - unixodbc-dev
-  - powershell
-  - tailscale
+# install snaps on first boot
+snap:
+  commands:
+  - snap install jq
+  - snap install yq
+  - snap install git-ubuntu --classic
+  - snap install kubectl --classic
+  - snap install helm --classic
 
-  # install snaps on first boot
-  snap:
-    commands:
-    - snap install jq
-    - snap install yq
-    - snap install git-ubuntu --classic
-    - snap install kubectl --classic
-    - snap install helm --classic
-
-  runcmd:
-  - curl -L https://carvel.dev/install.sh | bash
+runcmd:
+        - curl -L https://carvel.dev/install.sh | bash

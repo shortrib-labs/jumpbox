@@ -4,50 +4,30 @@ locals {
     "work"   = "${var.project_root}/work"
     "export" = "${var.project_root}/work/${var.vm_name}"
   }
-  cloud_config = {
-    "/meta-data" = ""
-    "/user-data" = var.user_data
-  }
 }
 
-source "vsphere-iso" "jumpbox-template" {
+source "vsphere-clone" "jumpbox-template" {
   vm_name   = var.vm_name
+  template  = var.base_template
 
-  iso_url      = var.image
-  iso_checksum = var.image_checksum
-
-  firmware      = "efi-secure"
-  guest_os_type = "ubuntu64Guest"
-  
   CPUs                 = var.numvcpus
   RAM                  = var.memsize
   disk_controller_type = ["pvscsi"]
   storage {
     disk_size             = var.disk_size
-    disk_controller_index = 0
     disk_thin_provisioned = true
   }
-  network_adapters {
-    network      = var.vsphere_network
-    network_card = "vmxnet3"
-  }
+  network      = var.vsphere_network
 
-  cd_content   = local.cloud_config
-  cd_label     = "cidata"
+  vapp {
+     properties = {
+        hostname  = var.vm_name
+        password  = var.default_password
+        user-data = base64encode(file("${var.project_root}/secrets/template/user-data"))
+     }
+   }
 
-  boot_command = [
-    "<esc><wait>",
-    "linux /casper/vmlinuz --- autoinstall ds=\"nocloud\"",
-    "<enter><wait>",
-    "initrd /casper/initrd",
-    "<enter><wait>",
-    "boot",
-    "<enter>"
-  ]
-  boot_wait        = var.boot_wait
-  shutdown_command = "echo '${var.default_password}' | sudo -S -E shutdown -P now"
-
-  ssh_username         = "arceus"
+  ssh_username         = "ubuntu"
   ssh_private_key_file = var.ssh_private_key_file
   ssh_timeout          = "10m"
  
@@ -58,26 +38,21 @@ source "vsphere-iso" "jumpbox-template" {
   cluster             = var.vsphere_cluster
   datastore           = var.vsphere_datastore
 
-  export {
-    name  = var.vm_name
-    images = false
-    force = true
-
-    output_directory = var.output_directory
+  content_library_destination {
+    name    = var.vm_name
+    library = var.vsphere_content_library
+    ovf     = true
+    destroy = true
   }
-  
 }
 
 build {
-  sources = ["source.vsphere-iso.jumpbox-template"]
+  sources = ["source.vsphere-clone.jumpbox-template"]
 
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
-      "sudo cloud-init clean",
-      "sudo cloud-init clean -l",
-      "apt list --installed",
-      "snap list"
+      "cloud-init analyze blame -i /var/log/cloud-init.log",
     ]
   }
 
