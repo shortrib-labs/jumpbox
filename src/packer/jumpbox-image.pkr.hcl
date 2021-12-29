@@ -23,7 +23,7 @@ source "vsphere-clone" "jumpbox-template" {
      properties = {
         hostname  = var.vm_name
         password  = var.default_password
-        user-data = var.user_data
+        user-data = base64encode(var.user_data)
      }
    }
 
