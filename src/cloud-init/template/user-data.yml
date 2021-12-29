@@ -66,4 +66,4 @@ snap:
   - snap install helm --classic
 
 runcmd:
-        - curl -L https://carvel.dev/install.sh | bash
+  - curl -L https://carvel.dev/install.sh | bash
