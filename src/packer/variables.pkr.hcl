@@ -12,14 +12,8 @@ variable "disk_size" {
   default = "81920"
 }
 
-variable "image" {
+variable "base_template" {
   type    = string
-  default = "https://releases.ubuntu.com/20.04/ubuntu-20.04.3-live-server-amd64.iso"
-}
-
-variable "image_checksum" {
-  type    = string
-  default = "f8e3086f3cea0fb3fefb29937ab5ed9d19e767079633960ccb50e76153effc98"
 }
 
 variable "memsize" {
@@ -48,6 +42,14 @@ variable "ssh_private_key_file" {
   type = string
 }
 
+variable "user_data" {
+  type = string
+}
+
+variable "output_directory" {
+  type = string
+}
+
 variable "vsphere_username" {
   type    = string
   default = "administrator@vsphere.local"
@@ -73,18 +75,6 @@ variable "vsphere_datastore" {
   type = string
 }
 
-variable "vsphere_template_name" {
-  type    = string
-}
-
-variable "vsphere_content_library" {
-  type = string
-}
-
 variable "vsphere_network" {
-  type = string
-}
-
-variable "output_directory" {
   type = string
 }
