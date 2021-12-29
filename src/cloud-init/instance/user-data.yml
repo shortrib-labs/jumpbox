@@ -16,6 +16,7 @@ fqdn: #@ "jumpbox.{}".format(data.values.domain)
 ssh_authorized_keys: 
 - #@ data.values.ssh.authorized_key
 
+password: #@ data.values.hashed_password
 chpasswd:
   expire: true
 

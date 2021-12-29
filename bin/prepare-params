@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+BRANCH=${1:-main}
+
+ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f ${PARAMS_YAML} \
+    --data-value branch="${BRANCH}" \
+    --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
+    --data-value microsoft.repository="$(curl --silent https://packages.microsoft.com/config/ubuntu/20.04/prod.list)" \
+    --data-value hashicorp.pgp_key="$(curl --silent https://apt.releases.hashicorp.com/gpg)" \
+    --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
+    --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
+    --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
+  > ${WORK_DIR}/params.yaml
