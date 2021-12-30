@@ -14,8 +14,8 @@ variable "hashed_password" {
   type = string
 }
 
-variable "ssh_public_key" {
-  type = string
+variable "ssh_authorized_keys" {
+  type = list
 }
 
 variable "cpus" {

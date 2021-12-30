@@ -4,7 +4,7 @@ data "carvel_ytt" "user_data" {
   ]
   values = {
     "domain" = var.domain
-    "ssh.authorized_key" = var.ssh_public_key
+    "ssh.authorized_key" = var.ssh_authorized_keys.0
     "hashed_password" = var.hashed_password
   }
 
