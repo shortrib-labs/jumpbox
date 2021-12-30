@@ -2,10 +2,6 @@ variable "project_root" {
   type = string
 }
 
-variable "template_name" {
-  type = string
-}
-
 variable "domain" {
   type = string
 }
