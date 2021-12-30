@@ -38,6 +38,14 @@ locals {
   DATA
 }
 
+resource "vsphere_virtual_disk" "workspace" {
+  size       = 2
+  vmdk_path  = "jumpbox.${var.domain}-workspace.vmdk"
+  datacenter = data.vsphere_datacenter.datacenter.id
+  datastore  = data.vsphere_datastore.datastore.id
+  type       = "thin"
+}
+
 resource "vsphere_virtual_machine" "jumpbox" {
   name             = local.server_name
   datastore_id     = data.vsphere_datastore.datastore.id
@@ -59,6 +67,14 @@ resource "vsphere_virtual_machine" "jumpbox" {
     size  = var.disk
 
     io_share_count = 1000
+  }
+
+  disk {
+    label        = "disk1"
+    datastore_id = data.vsphere_datastore.datastore.id
+    attach       = true
+    path         = vsphere_virtual_disk.workspace.vmdk_path
+    unit_number  = 1
   }
 
   cdrom {
