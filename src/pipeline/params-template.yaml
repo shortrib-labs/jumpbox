@@ -17,3 +17,4 @@ source:
 microsoft:  #@ data.values.microsoft
 hashicorp: #@ data.values.hashicorp
 tailscale: #@ data.values.tailscale
+github: #@ data.values.github

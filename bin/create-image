@@ -16,6 +16,8 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/cloud-init/template/user-data.yml
     --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
     --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
     --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
+    --data-value github.pgp_key="$(curl --silent https://cli.github.com/packages/githubcli-archive-keyring.gpg)" \
+    --data-value github.repository="deb [arch=amd64] https://cli.github.com/packages stable main" \
   >> ${SECRETS_DIR}/image/user-data
 
 packer build --force --var-file=${SECRETS_DIR}/jumpbox.pkrvars.hcl ${SOURCE_DIR}/packer

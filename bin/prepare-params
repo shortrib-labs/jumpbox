@@ -10,4 +10,7 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f 
     --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
     --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
     --data-value tailscale.repository="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.list)" \
+    --data-value github.pgp_key="$(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+                                      gpg --keyring work/key.gpg --no-default-keyring --import && gpg --keyring work/key.gpg --no-default-keyring --export -a)" \
+    --data-value github.repository="deb [arch=amd64] https://cli.github.com/packages stable main" \
   > ${WORK_DIR}/params.yaml
