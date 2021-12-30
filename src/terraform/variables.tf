@@ -37,7 +37,7 @@ variable "mac_address" {
   type = string
 }
 
-variable "remote_ovf_url" {
+variable "ovf_path" {
   type = string
 }
 
