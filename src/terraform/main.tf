@@ -27,16 +27,6 @@ data "vsphere_network" "network" {
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
 
-data "vsphere_content_library" "library" {
-  name = var.vsphere_content_library
-}
-
-data "vsphere_content_library_item" "template" {
-  name       = var.template_name
-  library_id = data.vsphere_content_library.library.id
-  type       = "ovf"
-}
-
 resource "random_pet" "default_password" {
   length = 4
 }
@@ -75,10 +65,6 @@ resource "vsphere_virtual_machine" "jumpbox" {
     client_device = true
   }
 
-  clone {
-    template_uuid = data.vsphere_content_library_item.template.id
-  }
-
   vapp {
     properties = {
       "instance-id" = "id-ovf"
@@ -86,6 +72,11 @@ resource "vsphere_virtual_machine" "jumpbox" {
       "password"    = random_pet.default_password.id
       "user-data"   = base64encode(local.user_data)
     }
+  }
+
+  ovf_deploy {
+    allow_unverified_ssl_cert = true        # deals with golang's ssl madness
+    remote_ovf_url = var.remote_ovf_url
   }
 
   extra_config = {

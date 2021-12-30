@@ -3,3 +3,4 @@
 domain: ""
 ssh:
   authorized_key: ""
+hashed_password: ""

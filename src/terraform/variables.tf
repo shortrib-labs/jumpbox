@@ -10,6 +10,10 @@ variable "domain" {
   type = string
 }
 
+variable "hashed_password" {
+  type = string
+}
+
 variable "ssh_public_key" {
   type = string
 }
@@ -32,6 +36,11 @@ variable "disk" {
 variable "mac_address" {
   type = string
 }
+
+variable "remote_ovf_url" {
+  type = string
+}
+
 
 variable "vsphere_server" {
   type = string
@@ -66,10 +75,6 @@ variable "vsphere_network" {
 }
 
 variable "vsphere_resource_pool" {
-  type = string
-}
-
-variable "vsphere_content_library" {
   type = string
 }
 
