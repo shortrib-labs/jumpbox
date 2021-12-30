@@ -9,6 +9,7 @@ ssh:
 base_template: #@ data.values.base_template
 
 template: #@ data.values.template
+instance: #@ data.values.instance
 
 source:
   repository: https://github.com/shortrib-net/jumpbox

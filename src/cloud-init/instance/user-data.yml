@@ -13,8 +13,7 @@
 # configuration.
 
 fqdn: #@ "jumpbox.{}".format(data.values.domain)
-ssh_authorized_keys: 
-- #@ data.values.ssh.authorized_key
+ssh_authorized_key: #@ data.values.ssh.authorized_key
 
 password: #@ data.values.hashed_password
 chpasswd:
