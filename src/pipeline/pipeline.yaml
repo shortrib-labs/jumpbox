@@ -28,6 +28,22 @@ resources:
     secret_access_key: ((minio.secret_access_key))
     bucket: ((bucket))
     key: ((template.vm_name)).version 
+ 
+- name: jumpbox-instance
+  type: terraform
+  icon: terraform
+  source:
+    env_name: default
+    vars:
+      project: shortrib
+      region: ((gcs.region))
+    env:
+      GOOGLE_CREDENTIALS: ((google-credentials))
+    backend_type: gcs
+    backend_config:
+      bucket: ((gcs.bucket))
+      prefix: ((gcs.prefix))
+      credentials: ((google-credentials))
 
 generate-user-data: 
   config: &generate-user-data
@@ -192,6 +208,33 @@ jobs:
     params: 
       file: version/version
 
+- name: plan-instance
+  plan:
+  - get: source
+    trigger: true
+    passed:
+    - create-image
+  - task: generate-instance-user-data
+    config: *generate-instance-user-data
+   - put: terraform
+    params:
+      plan_only: true
+      terraform_source: source/src/terraform
+      vars: *terraform-vars
+
+# - name: deploy-instance
+#   plan:
+#   - get: source
+#     trigger: true
+#     passed:
+#     - plan-instance
+#   - task: generate-instance-user-data
+#     config: *generate-instance-user-data
+#   - put: jumpbox-instance
+#     params:
+#       terraform_source: source/src/terraform
+#       vars: *terraform-vars
+ 
 resource_types:
 - name: terraform
   type: registry-image
