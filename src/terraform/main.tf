@@ -41,7 +41,6 @@ locals {
 resource "vsphere_virtual_disk" "workspace" {
   size       = 2
   vmdk_path  = "jumpbox.${var.domain}-workspace.vmdk"
-  datacenter = data.vsphere_datacenter.datacenter.id
   datastore  = data.vsphere_datastore.datastore.id
   type       = "thin"
 }
