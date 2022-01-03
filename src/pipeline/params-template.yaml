@@ -1,5 +1,7 @@
 #@ load("@ytt:data", "data")
 ---
+bump: patch
+
 domain: #@ data.values.domain
 bucket: images
 
