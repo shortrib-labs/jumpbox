@@ -48,6 +48,7 @@ resource "vsphere_virtual_disk" "home" {
 
 resource "vsphere_virtual_machine" "jumpbox" {
   name             = local.server_name
+  datacenter_id     = data.vsphere_datacenter.datacenter.id
   datastore_id     = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.resource_pool.id
   host_system_id   = data.vsphere_host.host.id
