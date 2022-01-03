@@ -38,10 +38,10 @@ locals {
   DATA
 }
 
-resource "vsphere_virtual_disk" "workspace" {
-  size       = 2
-  vmdk_path  = "jumpbox.${var.domain}-workspace.vmdk"
-  datastore  = data.vsphere_datastore.datastore.id
+resource "vsphere_virtual_disk" "home" {
+  size       = 50
+  vmdk_path  = "fcd/jumpbox.${var.domain}-workspace.vmdk"
+  datastore  = data.vsphere_datastore.datastore.name
   type       = "thin"
 }
 
