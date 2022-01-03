@@ -257,13 +257,13 @@ jobs:
   plan:
   - get: source
     passed:
-    - create-image
+    - plan-instance
   - get: ova
     passed:
-    - create-image 
+    - plan-instance 
   - get: version
     passed:
-    - create-image 
+    - plan-instance 
   - task: deploy-instance
     config:
       platform: linux
