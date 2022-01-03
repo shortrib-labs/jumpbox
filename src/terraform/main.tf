@@ -41,7 +41,7 @@ locals {
 resource "vsphere_virtual_disk" "home" {
   size       = 50
   vmdk_path  = "fcd/jumpbox.${var.domain}-home.vmdk"
-  datacenter  = data.vsphere_datacenter.datacenter.name
+  datacenter = data.vsphere_datacenter.datacenter.name
   datastore  = data.vsphere_datastore.datastore.name
   type       = "thin"
 }
@@ -50,6 +50,7 @@ resource "vsphere_virtual_machine" "jumpbox" {
   name             = local.server_name
   datastore_id     = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.resource_pool.id
+  host_system_id   = data.vsphere_host.host.id
   folder           = var.vsphere_folder
 
   num_cpus = var.cpus
