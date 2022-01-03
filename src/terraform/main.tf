@@ -40,7 +40,8 @@ locals {
 
 resource "vsphere_virtual_disk" "home" {
   size       = 50
-  vmdk_path  = "fcd/jumpbox.${var.domain}-workspace.vmdk"
+  vmdk_path  = "fcd/jumpbox.${var.domain}-home.vmdk"
+  datacenter  = data.vsphere_datacenter.datacenter.name
   datastore  = data.vsphere_datastore.datastore.name
   type       = "thin"
 }
@@ -72,7 +73,7 @@ resource "vsphere_virtual_machine" "jumpbox" {
     label        = "disk1"
     datastore_id = data.vsphere_datastore.datastore.id
     attach       = true
-    path         = vsphere_virtual_disk.workspace.vmdk_path
+    path         = vsphere_virtual_disk.home.vmdk_path
     unit_number  = 1
   }
 
