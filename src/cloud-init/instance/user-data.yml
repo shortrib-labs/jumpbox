@@ -19,6 +19,16 @@ password: #@ data.values.hashed_password
 chpasswd:
   expire: true
 
+network:
+  version: 2
+  ethernets:
+    # opaque ID for physical interfaces, only referred to by other stanzas
+    id0:
+      match:
+        macaddress: #@ data.values.mac_address
+      wakeonlan: true
+      dhcp4: true
+
 users:
 - default
 - name: crdant

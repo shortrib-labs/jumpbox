@@ -6,6 +6,7 @@ data "carvel_ytt" "user_data" {
     "domain" = var.domain
     "ssh.authorized_key" = var.ssh_authorized_keys.0
     "hashed_password" = var.hashed_password
+    "mac_address" = var.mac_address
   }
 
   ignore_unknown_comments = true
