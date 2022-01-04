@@ -28,7 +28,15 @@ resources:
     secret_access_key: ((minio.secret_access_key))
     bucket: ((bucket))
     key: ((template.vm_name)).version 
- 
+
+# - name: repave-timer
+#   type: time
+#   source:
+#     start: 2:00 AM
+#     stop: 3:00 AM
+#     days:
+#     - Saturday
+
 generate-user-data: 
   config: &generate-user-data
     platform: linux
@@ -71,7 +79,7 @@ packer-params: &packer-params
   SSH_PRIVATE_KEY: ((ssh_private_key))
   PKR_VAR_domain: ((domain))
   PKR_VAR_vm_name: ((template.vm_name))
-  PKR_VAR_base_template: ((instance)) 
+  PKR_VAR_base_template: ((base_template)) 
   PKR_VAR_default_password: ((password))
   PKR_VAR_numvcpus: ((template.numvcpus))
   PKR_VAR_memsize: ((template.memsize))
@@ -127,9 +135,16 @@ jobs:
         args:
         - -c
         - |
-          echo "${SSH_PRIVATE_KEY}" > ssh.key
-          packer validate --var project_root=${PWD}/source --var ssh_private_key_file=${PWD}/ssh.key --var "user_data=$(cat user-data/user-data.yml)" \
-            --var output_directory=${PWD}/../template/${OVF_NAME} source/src/packer 
+          project_root=${PWD}/source
+          output_directory=${PWD}/template/${OVF_NAME}
+          ssh_key=${PWD}/ssh.key
+
+          echo "${SSH_PRIVATE_KEY}" > ${ssh_key}
+          packer validate --var project_root=${project_root} \
+              --var ssh_private_key_file=${ssh_key} \
+              --var "user_data=$(cat user-data/user-data.yml)" \
+              --var output_directory=${output_directory} \
+            source/src/packer 
 - name: create-image
   plan:
   - get: source
@@ -159,29 +174,16 @@ jobs:
         args:
         - -c
         - |
-          echo "${SSH_PRIVATE_KEY}" > ssh.key
-          packer build --on-error=abort --var project_root=${PWD}/source --var ssh_private_key_file=${PWD}/ssh.key --var "user_data=$(cat user-data/user-data.yml)" \
-            --var output_directory=${PWD}/../template/${OVF_NAME} source/src/packer 
-  - task: delete-vm
-    config:
-      platform: linux
-      image_resource:
-        type: registry-image
-        source:
-          repository: registry.shortrib.dev/toolkit/toolkit
-      inputs:
-      - name: source
-      params:
-        WORKING_VM: ((template.vm_name))
-        GOVC_URL: https://((vsphere.server)) 
-        GOVC_USERNAME: ((vsphere.username)) 
-        GOVC_PASSWORD: ((vsphere.password)) 
-      run:
-        path: bash
-        args:
-        - -c
-        - | 
-          govc vm.destroy ${WORKING_VM}
+          project_root=${PWD}/source
+          output_directory=${PWD}/template/${OVF_NAME}
+          ssh_key=${PWD}/ssh.key
+
+          echo "${SSH_PRIVATE_KEY}" > ${ssh_key}
+          packer build --var project_root=${project_root} \
+              --var ssh_private_key_file=${ssh_key} \
+              --var "user_data=$(cat user-data/user-data.yml)" \
+              --var output_directory=${output_directory} \
+            source/src/packer 
   - task: convert-to-ova
     config:
       platform: linux
@@ -206,6 +208,26 @@ jobs:
           version=$(cat version/version)
           cd template/${OVF_NAME} 
           tar -cf ${root}/ova/${OVF_NAME}-${version}.ova *
+  - task: delete-vm
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: registry.shortrib.dev/toolkit/toolkit
+      inputs:
+      - name: source
+      params:
+        WORKING_VM: ((template.vm_name))
+        GOVC_URL: https://((vsphere.server)) 
+        GOVC_USERNAME: ((vsphere.username)) 
+        GOVC_PASSWORD: ((vsphere.password)) 
+      run:
+        path: bash
+        args:
+        - -c
+        - | 
+          govc vm.destroy ${WORKING_VM}
   - put: ova
     params:
       file: ova/((template.vm_name))-*.ova
@@ -249,9 +271,11 @@ jobs:
           version=$(cat version/version)
           project_root=${PWD}/source 
           ova_path=${PWD}/ova/((template.vm_name))-${version}.ova 
+          hashed_password="$(echo ${PASSWORD} | openssl passwd -6 -salt $(openssl rand -base64 16) -stdin)"
 
-          terraform init --chdir=${project_root}/src/terraform
-          terraform plan --chdir=${project_root}/src/terraform -var project_root=${project_root} --var ovf_path=${ova_path} --var hashed_password="$(echo ${PASSWORD} | openssl passwd -6 -salt $(openssl rand -base64 16) -stdin)"
+          terraform -chdir=${project_root}/src/terraform init 
+          terraform -chdir=${project_root}/src/terraform plan --var project_root=${project_root} \
+            --var ovf_path=${ova_path} --var hashed_password=${hashed_password}
 
 - name: deploy-instance
   plan:
@@ -286,6 +310,8 @@ jobs:
           version=$(cat version/version)
           project_root=${PWD}/source 
           ova_path=${PWD}/ova/((template.vm_name))-${version}.ova 
+          hashed_password="$(echo ${PASSWORD} | openssl passwd -6 -salt $(openssl rand -base64 16) -stdin)"
 
-          terraform init  --chdir=${project_root}/src/terraform 
-          terraform apply --chdir=${project_root}/src/terraform --var ovf_path=ova/((template.vm_name))-${version}.ova --var hashed_password="$(echo ${PASSWORD} | openssl passwd -6 -salt $(openssl rand -base64 16) -stdin)"
+          terraform -chdir=${project_root}/src/terraform init  
+          terraform -chdir=${project_root}/src/terraform apply --var project_root=${project_root} \
+            --var ovf_path=${ova_path} --var hashed_password=${hashed_password} --auto-approve=true
