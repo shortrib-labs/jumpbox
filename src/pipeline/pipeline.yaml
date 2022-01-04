@@ -58,6 +58,7 @@ generate-user-data:
       HASHICORP_APT: ((hashicorp))
       TAILSCALE_APT: ((tailscale))
       GITHUB_CLI_APT: ((github))
+      KUBIC_APT: ((kubic))
     run:
       path: bash
       args:
@@ -72,6 +73,7 @@ generate-user-data:
             --data-value-yaml hashicorp="${HASHICORP_APT}" \
             --data-value-yaml tailscale="${TAILSCALE_APT}" \
             --data-value-yaml github="${GITHUB_CLI_APT}" \
+            --data-value-yaml kubic="${KUBIC_APT}" \
           >> user-data/user-data.yml
 
 packer-params: &packer-params
