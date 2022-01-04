@@ -15,6 +15,7 @@ put-secret --team platform-team --pipeline "$(basename ${PROJECT_DIR})" \
 
 put-secret --team platform-team \
   --var vsphere server="$(yq e .vsphere.server ${PARAMS_YAML})" username="$(yq e .vsphere.username ${PARAMS_YAML})@shortrib.local" \
+                host="$(yq e .vsphere.host ${PARAMS_YAML})" resource_pool="$(yq e .vsphere.resource_pool ${PARAMS_YAML})" \
                 password="$(yq e .vsphere.password ${PARAMS_YAML})" datacenter="$(yq e .vsphere.datacenter ${PARAMS_YAML})" \
                 cluster="$(yq e .vsphere.cluster ${PARAMS_YAML})" network="$(yq e .vsphere.network ${PARAMS_YAML})" \
-                datastore="$(yq e .vsphere.datastore ${PARAMS_YAML})" 
+                datastore="$(yq e .vsphere.datastore ${PARAMS_YAML})" folder="$(yq e .vsphere.folder ${PARAMS_YAML})" 

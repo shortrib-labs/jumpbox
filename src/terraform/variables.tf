@@ -2,16 +2,16 @@ variable "project_root" {
   type = string
 }
 
-variable "template_name" {
-  type = string
-}
-
 variable "domain" {
   type = string
 }
 
-variable "ssh_public_key" {
+variable "hashed_password" {
   type = string
+}
+
+variable "ssh_authorized_keys" {
+  type = list
 }
 
 variable "cpus" {
@@ -32,6 +32,11 @@ variable "disk" {
 variable "mac_address" {
   type = string
 }
+
+variable "ovf_path" {
+  type = string
+}
+
 
 variable "vsphere_server" {
   type = string
@@ -66,10 +71,6 @@ variable "vsphere_network" {
 }
 
 variable "vsphere_resource_pool" {
-  type = string
-}
-
-variable "vsphere_content_library" {
   type = string
 }
 
