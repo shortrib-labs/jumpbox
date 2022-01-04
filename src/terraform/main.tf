@@ -65,6 +65,14 @@ resource "vsphere_virtual_machine" "jumpbox" {
   }
 
   disk {
+    label            = "disk0"
+    size             = var.disk_size
+    unit_number      = 0
+
+    thin_provisioned = true
+  }
+
+  disk {
     label        = "disk1"
     datastore_id = data.vsphere_datastore.datastore.id
     attach       = true
@@ -90,6 +98,7 @@ resource "vsphere_virtual_machine" "jumpbox" {
     local_ovf_path = var.ovf_path
     ip_protocol          = "IPV4"
     ip_allocation_policy = "DHCP"
+    disk_provisioning    = "thin"
   }
 
   extra_config = {
