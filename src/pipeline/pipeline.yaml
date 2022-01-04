@@ -31,6 +31,7 @@ resources:
 
 # - name: repave-timer
 #   type: time
+#   icon: timer-cog-outline
 #   source:
 #     start: 2:00 AM
 #     stop: 3:00 AM
