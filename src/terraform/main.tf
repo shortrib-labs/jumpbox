@@ -65,13 +65,6 @@ resource "vsphere_virtual_machine" "jumpbox" {
   }
 
   disk {
-    label = "disk0"
-    size  = var.disk
-
-    io_share_count = 1000
-  }
-
-  disk {
     label        = "disk1"
     datastore_id = data.vsphere_datastore.datastore.id
     attach       = true
