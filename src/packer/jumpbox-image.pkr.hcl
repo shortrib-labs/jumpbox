@@ -50,13 +50,20 @@ build {
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
-      "cloud-init analyze blame -i /var/log/cloud-init.log",
     ]
   }
 
   provisioner "shell" {
     scripts = [
-      "${local.directories.source}/scripts/install-keybase.sh"
+      "${local.directories.source}/scripts/install-keybase.sh",
     ]
   }
+
+  provisioner "shell" {
+    inline = [
+      "sudo cloud-init clean",
+      "sudo cloud-init clean -l",
+    ]
+  }
+
 }
