@@ -29,6 +29,9 @@ network:
       wakeonlan: true
       dhcp4: true
 
+mounts:
+- [ sdb, /home ]
+
 users:
 - default
 - name: crdant
