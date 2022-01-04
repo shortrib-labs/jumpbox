@@ -35,6 +35,9 @@ apt:
     github:
       source: #@ data.values.github.repository
       key: #@ data.values.github.pgp_key
+    kubic:
+      source: #@ data.values.kubic.repository
+      key: #@ data.values.kubic.pgp_key
 
 ## Update apt database and upgrade packages on first boot
 package_update: true
@@ -46,6 +49,7 @@ packages:
 - ca-certificates
 - curl
 - zsh
+- podman
 - xz-utils
 - direnv
 - neovim
@@ -69,7 +73,6 @@ snap:
   - snap install git-ubuntu --classic
   - snap install kubectl --classic
   - snap install helm --classic
-  - snap install docker
 
 runcmd:
   - curl -L https://carvel.dev/install.sh | bash

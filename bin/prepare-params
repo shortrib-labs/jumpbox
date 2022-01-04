@@ -13,4 +13,6 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f 
     --data-value github.pgp_key="$(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
                                       gpg --keyring ${WORK_DIR}/key.gpg --no-default-keyring --import && gpg --keyring ${WORK_DIR}/key.gpg --no-default-keyring --export -a)" \
     --data-value github.repository="deb [arch=amd64] https://cli.github.com/packages stable main" \
+    --data-value kubic.pgp_key="$(curl --silent https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key)" \
+    --data-value kubic.repository="deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" \
   > ${WORK_DIR}/params.yaml
