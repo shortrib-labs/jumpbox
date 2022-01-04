@@ -13,10 +13,7 @@ source "vsphere-clone" "jumpbox-template" {
   CPUs                 = var.numvcpus
   RAM                  = var.memsize
   disk_controller_type = ["pvscsi"]
-  storage {
-    disk_size             = var.disk_size
-    disk_thin_provisioned = true
-  }
+
   network      = var.vsphere_network
 
   vapp {
