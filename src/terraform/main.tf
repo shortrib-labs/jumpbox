@@ -88,6 +88,8 @@ resource "vsphere_virtual_machine" "jumpbox" {
   ovf_deploy {
     allow_unverified_ssl_cert = true        # deals with golang's ssl madness
     local_ovf_path = var.ovf_path
+    ip_protocol          = "IPV4"
+    ip_allocation_policy = "DHCP"
   }
 
   extra_config = {
