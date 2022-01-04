@@ -46,6 +46,7 @@ packages:
 - ca-certificates
 - curl
 - zsh
+- podman
 - xz-utils
 - direnv
 - neovim
@@ -69,7 +70,6 @@ snap:
   - snap install git-ubuntu --classic
   - snap install kubectl --classic
   - snap install helm --classic
-  - snap install docker
 
 runcmd:
   - curl -L https://carvel.dev/install.sh | bash
