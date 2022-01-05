@@ -81,5 +81,5 @@ runcmd:
   - curl -L https://github.com/concourse/concourse/releases/download/v7.6.0/fly-7.6.0-linux-amd64.tgz | tar -C /usr/local/bin -xzf -
   - curl --output /usr/local/bin/fission -L https://github.com/fission/fission/releases/download/v1.15.0/fission-v1.15.0-linux-amd64
   - chmod 755 /usr/local/bin/fission
-  - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -xf /usr/local/bin --strip-components=1 velero-v1.7.1-linux-amd64/velero
+  - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
   - chmod 755 /usr/local/bin/velero
