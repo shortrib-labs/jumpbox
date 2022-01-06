@@ -36,6 +36,7 @@ resources:
     start: 2:00 AM
     stop: 3:00 AM
     days:
+    - Thursday
     - Saturday
 
 generate-user-data: 
