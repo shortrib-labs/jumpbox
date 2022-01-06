@@ -29,7 +29,7 @@ resources:
     bucket: ((bucket))
     key: ((template.vm_name)).version 
 
-# - name: repave-timer
+# - name: repave
 #   type: time
 #   icon: timer-cog-outline
 #   source:
