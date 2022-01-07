@@ -74,6 +74,63 @@ snap:
   - snap install kubectl --classic
   - snap install helm --classic
 
+groups:
+- ssher:
+  - ubuntu
+
+write_files:
+- path: /etc/ssh/ssh_host_ed25519_key
+  content: #@ data.values.ssh_host_key.private
+  permissions: '0400'
+  owner: root:root
+- path: /etc/ssh/ssh_host_ed25519_key.pub
+  content: #@ data.values.ssh_host_key.public
+  permissions: '0400'
+  owner: root:root
+- path: /etc/ssh/sshd_config.d/01-hardening.conf
+  content: |
+    # enable eed25519 key
+    HostKey /etc/ssh/ssh_host_ed25519_key
+
+    # restrict supported key exchange, cipher, and MAC algorithms
+    KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
+    Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+    MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+    HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-512,rsa-sha2-256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com
+
+    # restrict authentication mechanism
+    PasswordAutehntication no
+    ChallengeResponseAuthentication no
+    PubkeyAuthentication yes
+
+    # limit who can use SSH
+    AllowGroups ssher
+  permissions: '0644'
+  owner: root:root
+- path: /etc/ssh/sshd_config.d/88-gpg-forwarding.conf
+  content: |
+    # Enables automatic removal of stale sockets to support GPG forwarding
+    StreamLocalBindUnlink yes
+  permissions: '0644'
+  owner: root:root
+- path: /etc/ssh/ssh_config.d/01-hardening.conf
+  content: |
+    Host github.com
+      KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+    Host *
+      # restrict supported key exchange, cipher, and MAC algorithms
+      KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
+      Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+      MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+      HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-512,rsa-sha2-256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com
+
+      # restrict authentication mechanism
+      PasswordAuthentication no
+      ChallengeResponseAuthentication no
+      PubkeyAuthentication yes
+    permissions: '0644'
+  owner: root:root
+
 runcmd:
   - curl -L https://carvel.dev/install.sh | bash
   - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
@@ -83,3 +140,7 @@ runcmd:
   - chmod 755 /usr/local/bin/fission
   - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
   - chmod 755 /usr/local/bin/velero
+  - rm /etc/ssh/ssh_host_rsa_key*
+  - ssh-keygen -M generate -O bits=3072 /tmp/moduli.candidates
+  - ssh-keygen -M screen -f /tmp/moduli.candidates -f /tmp/moduli
+  - mv /tmp/moduli /etc/ssh/moduli

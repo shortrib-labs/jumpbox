@@ -40,6 +40,7 @@ users:
   - users 
   - adm 
   - sudo
+  - ssher
   ssh_import_id: 
   - gh:crdant
   sudo: "ALL=(ALL) NOPASSWD:ALL"
