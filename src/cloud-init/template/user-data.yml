@@ -140,7 +140,4 @@ runcmd:
   - chmod 755 /usr/local/bin/fission
   - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
   - chmod 755 /usr/local/bin/velero
-  - rm /etc/ssh/ssh_host_rsa_key*
-  - ssh-keygen -M generate -O bits=3072 /tmp/moduli.candidates
-  - ssh-keygen -M screen -f /tmp/moduli.candidates -f /tmp/moduli
-  - mv /tmp/moduli /etc/ssh/moduli
+  - rm /etc/ssh/ssh_host_rsa_key
