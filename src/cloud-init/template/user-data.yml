@@ -82,7 +82,7 @@ groups:
   - ubuntu
 
 write_files:
-  path: /etc/ssh/sshd_config.d/01-hardening.conf
+- path: /etc/ssh/sshd_config.d/01-hardening.conf
   content: |
     # enable eed25519 key
     HostKey /etc/ssh/ssh_host_ed25519_key
