@@ -14,6 +14,9 @@
 # configuration.
 fqdn: #@ "jumpbox.{}".format(data.values.domain)
 ssh_authorized_keys: #@ data.values.ssh.authorized_keys
+ssh_keys:
+  ed25519_private: #@ data.values.ssh_host_key.private
+  ed25519_public: #@ data.values.ssh_host_key.public
 
 ## don't require a password change since we just set it
 chpasswd:
@@ -79,15 +82,7 @@ groups:
   - ubuntu
 
 write_files:
-- path: /etc/ssh/ssh_host_ed25519_key
-  content: #@ data.values.ssh_host_key.private
-  permissions: '0400'
-  owner: root:root
-- path: /etc/ssh/ssh_host_ed25519_key.pub
-  content: #@ data.values.ssh_host_key.public
-  permissions: '0400'
-  owner: root:root
-- path: /etc/ssh/sshd_config.d/01-hardening.conf
+ path: /etc/ssh/sshd_config.d/01-hardening.conf
   content: |
     # enable eed25519 key
     HostKey /etc/ssh/ssh_host_ed25519_key
@@ -104,7 +99,7 @@ write_files:
     PubkeyAuthentication yes
 
     # limit who can use SSH
-    AllowGroups ssher
+    # AllowGroups ssher
   permissions: '0644'
   owner: root:root
 - path: /etc/ssh/sshd_config.d/88-gpg-forwarding.conf
