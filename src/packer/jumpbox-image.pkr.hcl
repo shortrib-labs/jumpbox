@@ -40,7 +40,7 @@ source "vsphere-clone" "jumpbox-template" {
     images = false
     force = true
 
-    output_directory  var.output_directory
+    output_directory  = var.output_directory
   }
 }
 
