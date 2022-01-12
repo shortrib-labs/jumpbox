@@ -85,7 +85,7 @@ write_files:
 - path: /etc/ssh/sshd_config.d/01-hardening.conf
   content: |
     # enable eed25519 key
-    HostKey /etc/ssh/ssh_host_ed25519_key
+    # HostKey /etc/ssh/ssh_host_ed25519_key
 
     # restrict supported key exchange, cipher, and MAC algorithms
     KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
@@ -94,7 +94,7 @@ write_files:
     HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-512,rsa-sha2-256-cert-v01@openssh.com,rsa-sha2-512-cert-v01@openssh.com
 
     # restrict authentication mechanism
-    PasswordAuthentication no
+    PasswordAuthentication yes
     ChallengeResponseAuthentication no
     PubkeyAuthentication yes
 
