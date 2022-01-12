@@ -127,6 +127,7 @@ write_files:
   owner: root:root
 
 runcmd:
+  - exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
   - curl -L https://carvel.dev/install.sh | bash
   - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
   - chmod 755 /usr/local/bin/mc
