@@ -40,12 +40,18 @@ source "vsphere-clone" "jumpbox-template" {
     images = false
     force = true
 
-    output_directory = var.output_directory
+    output_directory  var.output_directory
   }
 }
 
 build {
   sources = ["source.vsphere-clone.jumpbox-template"]
+
+  provisioner "shell-local" {
+    inline = [
+      "sleep 60"
+    ]
+  }
 
   provisioner "shell" {
     inline = [
