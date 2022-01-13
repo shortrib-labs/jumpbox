@@ -104,7 +104,7 @@ write_files:
     PubkeyAuthentication yes
 
     # limit who can use SSH
-    # AllowGroups ssher
+    AllowGroups ssher
   permissions: '0644'
   owner: root:root
 - path: /etc/ssh/sshd_config.d/88-gpg-forwarding.conf
