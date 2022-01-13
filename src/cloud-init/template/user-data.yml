@@ -102,9 +102,6 @@ write_files:
     PasswordAuthentication yes
     ChallengeResponseAuthentication no
     PubkeyAuthentication yes
-
-    # limit who can use SSH
-    AllowGroups ssher
   permissions: '0644'
   owner: root:root
 - path: /etc/ssh/sshd_config.d/88-gpg-forwarding.conf
@@ -132,7 +129,6 @@ write_files:
   owner: root:root
 
 runcmd:
-  - usermod -a -G ssher ubuntu 
   - curl -L https://carvel.dev/install.sh | bash
   - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
   - chmod 755 /usr/local/bin/mc
@@ -142,4 +138,5 @@ runcmd:
   - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
   - chmod 755 /usr/local/bin/velero
   - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
-
+  - usermod -a -G ssher ubuntu 
+  - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/ssh_config.d/02-limit-to-ssher.conf

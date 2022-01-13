@@ -47,12 +47,6 @@ source "vsphere-clone" "jumpbox-template" {
 build {
   sources = ["source.vsphere-clone.jumpbox-template"]
 
-  provisioner "shell-local" {
-    inline = [
-      "sleep 60"
-    ]
-  }
-
   provisioner "shell" {
     inline = [
       "cloud-init status --wait",
