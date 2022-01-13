@@ -127,7 +127,7 @@ write_files:
   owner: root:root
 
 runcmd:
-  - exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+  - usermod -a -G ssher ubuntu 
   - curl -L https://carvel.dev/install.sh | bash
   - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
   - chmod 755 /usr/local/bin/mc
@@ -136,4 +136,5 @@ runcmd:
   - chmod 755 /usr/local/bin/fission
   - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
   - chmod 755 /usr/local/bin/velero
-  - rm /etc/ssh/ssh_host_rsa_key
+  - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
+
