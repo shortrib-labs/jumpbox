@@ -13,9 +13,16 @@ put-secret --team platform-team --pipeline "$(basename ${PROJECT_DIR})" \
 put-secret --team platform-team --pipeline "$(basename ${PROJECT_DIR})" \
   --var ssh_private_key value="$(cat $(yq e .ssh.private_key_file ${PARAMS_YAML}))" 
 
+ssh-keygen -t ed25519 -f ${SECRETS_DIR}/ssh_host_ed25519_key -N "" <<<y
+put-secret --team platform-team --pipeline "$(basename ${PROJECT_DIR})" \
+  --var ssh_host_key private="$(cat ${SECRETS_DIR}/ssh_host_ed25519_key)" \
+                     public="$(cat ${SECRETS_DIR}/ssh_host_ed25519_key.pub)"
+rm ${SECRETS_DIR}/ssh_host_ed25519_key ${SECRETS_DIR}/ssh_host_ed25519_key.pub
+
 put-secret --team platform-team \
   --var vsphere server="$(yq e .vsphere.server ${PARAMS_YAML})" username="$(yq e .vsphere.username ${PARAMS_YAML})@shortrib.local" \
                 host="$(yq e .vsphere.host ${PARAMS_YAML})" resource_pool="$(yq e .vsphere.resource_pool ${PARAMS_YAML})" \
                 password="$(yq e .vsphere.password ${PARAMS_YAML})" datacenter="$(yq e .vsphere.datacenter ${PARAMS_YAML})" \
                 cluster="$(yq e .vsphere.cluster ${PARAMS_YAML})" network="$(yq e .vsphere.network ${PARAMS_YAML})" \
                 datastore="$(yq e .vsphere.datastore ${PARAMS_YAML})" folder="$(yq e .vsphere.folder ${PARAMS_YAML})" 
+
