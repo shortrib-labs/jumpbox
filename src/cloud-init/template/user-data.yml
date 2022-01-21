@@ -132,6 +132,10 @@ write_files:
 
 runcmd:
   - curl -L https://carvel.dev/install.sh | bash
+  - #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.value.tanzu.version, data.value.tanzu.os)
+  - tar xzvf #@ "tce-linux-amd64-{}.9.1.tar.gz".format(data.values.tanzu.version)"
+  - ( cd #@ "tce-linux-amd64-{}".format(data.values.tanzu.version) && ./install.sh )
+  - rm -rf tce-linux*
   - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
   - chmod 755 /usr/local/bin/mc
   - curl -L https://github.com/concourse/concourse/releases/download/v7.6.0/fly-7.6.0-linux-amd64.tgz | tar -C /usr/local/bin -xzf -
