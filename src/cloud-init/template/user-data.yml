@@ -38,6 +38,10 @@ apt:
     kubic:
       source: #@ data.values.kubic.repository
       key: #@ data.values.kubic.pgp_key
+    docker:
+      source: #@ data.values.docker.repository
+      key: #@ data.values.docker.pgp_key
+
 
 ## Update apt database and upgrade packages on first boot
 package_update: true
@@ -48,7 +52,10 @@ packages:
 - open-vm-tools
 - ca-certificates
 - curl
+- docker-ce
+- docker-ce-rootless-extras
 - zsh
+- docker-ce
 - podman
 - xz-utils
 - direnv
@@ -66,6 +73,7 @@ packages:
 - gh
 - fzf
 - silversearcher-ag
+- sipcalc
 
 # install snaps on first boot
 snap:
@@ -79,6 +87,7 @@ snap:
 groups:
 - ssher:
   - ubuntu
+- docker
 
 write_files:
 - path: /etc/ssh/ssh_host_ed25519_key
