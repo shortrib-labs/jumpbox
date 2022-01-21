@@ -64,6 +64,8 @@ packages:
 - powershell
 - tailscale
 - gh
+- fzf
+- silversearcher-ag
 
 # install snaps on first boot
 snap:
