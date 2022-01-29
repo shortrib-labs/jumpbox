@@ -41,8 +41,7 @@ users:
   - adm 
   - sudo
   - ssher
-  ssh_import_id: 
-  - gh:crdant
+  ssh_import_id: #@ data.values.ssh.user_authorized_keys.crdant
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   lock_passwd: true
 

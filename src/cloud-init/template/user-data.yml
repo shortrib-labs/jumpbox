@@ -136,7 +136,7 @@ write_files:
       PasswordAuthentication no
       ChallengeResponseAuthentication no
       PubkeyAuthentication yes
-    permissions: '0644'
+  permissions: '0644'
   owner: root:root
 
 runcmd:
