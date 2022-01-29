@@ -26,3 +26,8 @@ put-secret --team platform-team \
                 cluster="$(yq e .vsphere.cluster ${PARAMS_YAML})" network="$(yq e .vsphere.network ${PARAMS_YAML})" \
                 datastore="$(yq e .vsphere.datastore ${PARAMS_YAML})" folder="$(yq e .vsphere.folder ${PARAMS_YAML})" 
 
+put-secret --team platform-team \
+  --var minio fqdn="$(yq e .minio.fqdn ${PARAMS_YAML})" \
+              access_key_id="$(yq e .minio.access-key ${PARAMS_YAML})" \
+              secret_access_key="$(yq e .minio.secret-key ${PARAMS_YAML})"
+ 
