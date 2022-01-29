@@ -85,8 +85,7 @@ snap:
   - snap install helm --classic
 
 groups:
-- ssher:
-  - ubuntu
+- ssher
 - docker
 
 write_files:
@@ -140,6 +139,7 @@ write_files:
   owner: root:root
 
 runcmd:
+  - usermod -a -G ssher ubuntu 
   - curl -L https://carvel.dev/install.sh | bash
   - #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.values.tanzu.version, data.values.tanzu.os)
   - #@ "tar xzvf tce-linux-amd64-{}.9.1.tar.gz".format(data.values.tanzu.version)
@@ -155,5 +155,4 @@ runcmd:
   - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
   - awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
   - mv /etc/ssh/moduli.safe /etc/ssh/moduli
-  - usermod -a -G ssher ubuntu 
   - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/ssh_config.d/02-limit-to-ssher.conf
