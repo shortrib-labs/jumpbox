@@ -14,10 +14,6 @@ variable "ssh_authorized_keys" {
   type = list
 }
 
-variable "user_authorized_keys" {
-  type = map
-}
-
 variable "cpus" {
   type    = number
   default = 2
