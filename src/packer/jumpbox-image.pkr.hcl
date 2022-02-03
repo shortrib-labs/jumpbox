@@ -60,6 +60,16 @@ build {
   }
 
   provisioner "shell" {
+    scripts = [
+      "${local.directories.source}/scripts/install-mssql-client.sh",
+    ]
+    environment_vars = [
+      "ACCEPT_EULA=Y"
+    ]
+    execute_command = "sudo -S env {{ .Vars }} {{ .Path }}"
+  }
+
+ provisioner "shell" {
     inline = [
       "sudo cloud-init clean",
       "sudo cloud-init clean -l",
