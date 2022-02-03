@@ -65,9 +65,6 @@ packages:
 - packer
 - terraform
 - vault
-# - msodbcsql17
-# - mssql-tools
-# - unixodbc-dev
 - powershell
 - tailscale
 - gh
