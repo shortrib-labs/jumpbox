@@ -43,6 +43,7 @@ users:
   - ssher
   ssh_import_id: 
   - gh:crdant
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPRHGtpMSDmEpsAb0qSUT0Y4ay62BVvr75xUZynThAh
   sudo: "ALL=(ALL) NOPASSWD:ALL"
   lock_passwd: true
 

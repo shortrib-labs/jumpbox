@@ -85,8 +85,7 @@ snap:
   - snap install helm --classic
 
 groups:
-- ssher:
-  - ubuntu
+- ssher
 - docker
 
 write_files:
@@ -136,24 +135,24 @@ write_files:
       PasswordAuthentication no
       ChallengeResponseAuthentication no
       PubkeyAuthentication yes
-    permissions: '0644'
+  permissions: '0644'
   owner: root:root
 
 runcmd:
-  - curl -L https://carvel.dev/install.sh | bash
-  - #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.value.tanzu.version, data.value.tanzu.os)
-  - tar xzvf #@ "tce-linux-amd64-{}.9.1.tar.gz".format(data.values.tanzu.version)"
-  - ( cd #@ "tce-linux-amd64-{}".format(data.values.tanzu.version) && ./install.sh )
-  - rm -rf tce-linux*
-  - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
-  - chmod 755 /usr/local/bin/mc
-  - curl -L https://github.com/concourse/concourse/releases/download/v7.6.0/fly-7.6.0-linux-amd64.tgz | tar -C /usr/local/bin -xzf -
-  - curl --output /usr/local/bin/fission -L https://github.com/fission/fission/releases/download/v1.15.0/fission-v1.15.0-linux-amd64
-  - chmod 755 /usr/local/bin/fission
-  - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
-  - chmod 755 /usr/local/bin/velero
-  - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
-  - awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
-  - mv /etc/ssh/moduli.safe /etc/ssh/moduli
-  - usermod -a -G ssher ubuntu 
-  - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/ssh_config.d/02-limit-to-ssher.conf
+    - curl -L https://carvel.dev/install.sh | bash
+    - #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.values.tanzu.version, data.values.tanzu.os)
+    - #@ "tar xzvf tce-linux-amd64-{}.9.1.tar.gz".format(data.values.tanzu.version)
+    - #@ "(cd tce-linux-amd64-{} && ./install.sh)".format(data.values.tanzu.version)
+    - rm -rf tce-linux*
+    - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
+    - chmod 755 /usr/local/bin/mc
+    - curl -L https://github.com/concourse/concourse/releases/download/v7.6.0/fly-7.6.0-linux-amd64.tgz | tar -C /usr/local/bin -xzf -
+    - curl --output /usr/local/bin/fission -L https://github.com/fission/fission/releases/download/v1.15.0/fission-v1.15.0-linux-amd64
+    - chmod 755 /usr/local/bin/fission
+    - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.7.1/velero-v1.7.1-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.7.1-linux-amd64/velero
+    - chmod 755 /usr/local/bin/velero
+    - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
+    - awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
+    - mv /etc/ssh/moduli.safe /etc/ssh/moduli
+    - usermod -a -G ssher ubuntu 
+    - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/ssh_config.d/02-limit-to-ssher.conf

@@ -1,4 +1,4 @@
----
+
 resources:
 - name: source
   type: git
@@ -60,6 +60,8 @@ generate-user-data:
       TAILSCALE_APT: ((tailscale))
       GITHUB_CLI_APT: ((github))
       KUBIC_APT: ((kubic))
+      DOCKER_APT: ((docker))
+      TANZU: ((tanzu))
     run:
       path: bash
       args:
@@ -76,6 +78,8 @@ generate-user-data:
             --data-value-yaml tailscale="${TAILSCALE_APT}" \
             --data-value-yaml github="${GITHUB_CLI_APT}" \
             --data-value-yaml kubic="${KUBIC_APT}" \
+            --data-value-yaml docker="${DOCKER_APT}" \
+            --data-value-yaml tanzu="${TANZU}" \
           >> user-data/user-data.yml
 
 packer-params: &packer-params
@@ -159,6 +163,7 @@ jobs:
   - get: version
     params: 
       bump: ((bump))
+      pre: ((pre))
   - task: generate-user-data
     config: *generate-user-data
   - task: create-image
@@ -185,7 +190,6 @@ jobs:
 
           umask 077
           echo "${SSH_PRIVATE_KEY}" > ${ssh_key}
-          PACKER_LOG=yes
           packer build --var project_root=${project_root} \
               --var ssh_private_key_file=${ssh_key} \
               --var "user_data=$(cat user-data/user-data.yml)" \
