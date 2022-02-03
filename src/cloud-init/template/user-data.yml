@@ -65,7 +65,7 @@ packages:
 - packer
 - terraform
 - vault
- powershell
+- powershell
 - tailscale
 - gh
 - fzf
