@@ -1,7 +1,25 @@
 #!/usr/bin/env bash
 
+VERSION_VARS="--var bump=patch --var pre="
+echo "flag == ${1}"
+if [[ ${1} == "--minor" ]]; then 
+  VERSION_VARS="--var bump=minor --var pre="
+fi
+
+if [[ ${1} == "--major" ]]; then 
+  VERSION_VARS="--var bump=major --var pre="
+fi
+
+if [[ ${1} == "--final" ]]; then 
+  VERSION_VARS="--var bump=final --var pre="
+fi
+
+if [[ ${1} == "--pre" ]]; then 
+  VERSION_VARS="--var pre=${2} --var bump="
+fi
+
 TEAM=$(yq e .concourse.team ${PARAMS_YAML})
 PIPELINE=$(basename ${PROJECT_DIR}) 
 
-fly --target ${TEAM} set-pipeline --pipeline ${PIPELINE} --config ${SOURCE_DIR}/pipeline/pipeline.yaml --load-vars-from ${WORK_DIR}/params.yaml
+fly --target ${TEAM} set-pipeline --pipeline ${PIPELINE} --config ${SOURCE_DIR}/pipeline/pipeline.yaml --load-vars-from ${WORK_DIR}/params.yaml ${VERSION_VARS}
 fly --target ${TEAM} unpause-pipeline --pipeline ${PIPELINE}
