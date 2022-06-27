@@ -80,6 +80,9 @@ snap:
   - snap install git-ubuntu --classic
   - snap install kubectl --classic
   - snap install helm --classic
+  - snap install certbot --classic
+  - snap install certbot --classic
+  - snap install certbot-dns-google
 
 groups:
 - ssher
