@@ -17,11 +17,9 @@ source:
   repository: https://github.com/shortrib-net/jumpbox
   branch: #@ data.values.branch
 
-microsoft:  #@ data.values.microsoft
 hashicorp: #@ data.values.hashicorp
 tailscale: #@ data.values.tailscale
 github: #@ data.values.github
-kubic: #@ data.values.kubic
 docker: #@ data.values.docker
 
 tanzu: #@ data.values.tanzu
