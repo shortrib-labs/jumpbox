@@ -1,6 +1,7 @@
 #@ load("@ytt:data", "data")
 ---
 bump: patch
+pre: rc
 
 domain: #@ data.values.domain
 bucket: images
@@ -14,7 +15,7 @@ template: #@ data.values.template
 instance: #@ data.values.instance
 
 source:
-  repository: https://github.com/shortrib-net/jumpbox
+  repository: https://github.com/shortrib-labs/jumpbox
   branch: #@ data.values.branch
 
 hashicorp: #@ data.values.hashicorp
