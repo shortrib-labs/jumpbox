@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 BRANCH=${1:-main}
-BUMP=${2:-patch}
 
 ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f ${PARAMS_YAML} \
     --data-value branch="${BRANCH}" \
