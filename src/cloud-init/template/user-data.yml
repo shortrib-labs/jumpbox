@@ -145,7 +145,7 @@ runcmd:
   )" 
 - |
   bash -c "(
-    set -x i
+    set -x
     cd "$(mktmp -d)"
     OS="$(uname | tr '[:upper:]' '[:lower:]')"
     ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
@@ -169,3 +169,5 @@ runcmd:
 - mv /etc/ssh/moduli.safe /etc/ssh/moduli
 - usermod -a -G ssher ubuntu 
 - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/sshd_config.d/02-limit-to-ssher.conf
+- cp /var/log/cloud-init-output.log /root
+- cp /var/log/cloud-init.log /root
