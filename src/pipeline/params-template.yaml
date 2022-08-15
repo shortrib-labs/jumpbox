@@ -1,6 +1,7 @@
 #@ load("@ytt:data", "data")
 ---
 bump: patch
+pre: rc
 
 domain: #@ data.values.domain
 bucket: images
@@ -14,14 +15,12 @@ template: #@ data.values.template
 instance: #@ data.values.instance
 
 source:
-  repository: https://github.com/shortrib-net/jumpbox
+  repository: https://github.com/shortrib-labs/jumpbox
   branch: #@ data.values.branch
 
-microsoft:  #@ data.values.microsoft
 hashicorp: #@ data.values.hashicorp
 tailscale: #@ data.values.tailscale
 github: #@ data.values.github
-kubic: #@ data.values.kubic
 docker: #@ data.values.docker
 
 tanzu: #@ data.values.tanzu

@@ -4,8 +4,6 @@ BRANCH=${1:-main}
 
 ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f ${PARAMS_YAML} \
     --data-value branch="${BRANCH}" \
-    --data-value microsoft.pgp_key="$(curl --silent https://packages.microsoft.com/keys/microsoft.asc)" \
-    --data-value microsoft.repository="$(curl --silent https://packages.microsoft.com/config/ubuntu/20.04/prod.list)" \
     --data-value hashicorp.pgp_key="$(curl --silent https://apt.releases.hashicorp.com/gpg)" \
     --data-value hashicorp.repository='deb [arch=amd64] https://apt.releases.hashicorp.com $RELEASE main' \
     --data-value tailscale.pgp_key="$(curl --silent https://pkgs.tailscale.com/stable/ubuntu/focal.gpg)" \
@@ -13,8 +11,6 @@ ytt --ignore-unknown-comments -f ${SOURCE_DIR}/pipeline/params-template.yaml -f 
     --data-value github.pgp_key="$(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
                                       gpg --keyring ${WORK_DIR}/key.gpg --no-default-keyring --import && gpg --keyring ${WORK_DIR}/key.gpg --no-default-keyring --export -a)" \
     --data-value github.repository="deb [arch=amd64] https://cli.github.com/packages stable main" \
-    --data-value kubic.pgp_key="$(curl --silent https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key)" \
-    --data-value kubic.repository="deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" \
     --data-value docker.pgp_key="$(curl --silent https://download.docker.com/linux/ubuntu/gpg)" \
-    --data-value docker.repository="deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" \
+    --data-value docker.repository="deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable" \
   > ${WORK_DIR}/params.yaml
