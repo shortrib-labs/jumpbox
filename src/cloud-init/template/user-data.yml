@@ -75,7 +75,7 @@ snap:
   - snap install kubectl --classic
   - snap install helm --classic
   - snap install certbot --classic
-  - snap set certbot-dns-google trust-plugin-with-root=ok
+  - snap set certbot trust-plugin-with-root=ok
   - snap install certbot-dns-google
 
 groups:
