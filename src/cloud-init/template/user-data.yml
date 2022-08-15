@@ -133,19 +133,26 @@ write_files:
   owner: root:root
 
 runcmd:
-- curl -L https://krew.sh | bash
-- curl -L https://krew.sh/ns | bash
-- curl -L https://krew.sh/ctx | bash
-- curl -L https://krew.sh/preflight | bash
-- curl -L https://krew.sh/support-bundle | bash
 - curl https://kots.io/install | bash
-- wget -O replicated.targ.gz -qi $(curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest | yq '.assets[] | select(.browser_download_url | contains("linux_amd64")).browser_download_url')
-- tar -C /usr/local xvf replicated.tar.gz replicated
-- rm replicated.tar.gz
+- bash -c "(
+    KREW_ROOT=/usr/local/libexec/krew
+    curl -L https://krew.sh/ns | bash
+    curl -L https://krew.sh/ns | bash
+    curl -L https://krew.sh/ctx | bash
+    curl -L https://krew.sh/preflight | bash
+    curl -L https://krew.sh/support-bundle
+  )" 
+- bash -c "(
+    set -x ; cd "$(mktmp -d)"
+    OS="$(uname | tr '[:upper:]' '[:lower:]')"
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+    wget -O replicated.targ.gz -q $(curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest | yq '.assets[] | select(.browser_download_url | contains("linux_amd64")).browser_download_url')
+    tar -C /usr/local xzvf replicated.tar.gz replicated
+  )"
 - curl -L https://carvel.dev/install.sh | bash
-- #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.values.tanzu.version, data.values.tanzu.os)
-- #@ "tar xzvf tce-linux-amd64-{}.tar.gz".format(data.values.tanzu.version)
-- #@ "(cd tce-linux-amd64-{} && ./install.sh)".format(data.values.tanzu.version)
+- "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.values.tanzu.version, data.values.tanzu.os)
+- "tar xzvf tce-linux-amd64-{}.tar.gz".format(data.values.tanzu.version)
+- "(cd tce-linux-amd64-{} && ./install.sh)".format(data.values.tanzu.version)
 - rm -rf tce-linux*
 - curl --output /usr/local/bin/mc -L https://dl.min.io/client/mc/release/linux-amd64/mc
 - chmod 755 /usr/local/bin/mc
