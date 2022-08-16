@@ -166,10 +166,14 @@ runcmd:
 - chmod 755 /usr/local/bin/fission
 - curl -L https://github.com/vmware-tanzu/velero/releases/download/v1.9.0/velero-v1.9.0-linux-amd64.tar.gz | tar -C /usr/local/bin --strip-components=1 -xzf - velero-v1.9.0-linux-amd64/velero
 - chmod 755 /usr/local/bin/velero
+- ls -1 /etc/ssh_host*
 - rm /etc/ssh/ssh_host_dsa_key* /etc/ssh/ssh_host_ecdsa_key* /etc/ssh/ssh_host_rsa_key* 
+- ls -1 /etc/ssh_host*
 - awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.safe
 - mv /etc/ssh/moduli.safe /etc/ssh/moduli
 - usermod -a -G ssher ubuntu 
 - echo "# limit who can use SSH\nAllowGroups ssher" > /etc/ssh/sshd_config.d/02-limit-to-ssher.conf
+- ls -1 /usr/local/
+- ls -l /usr/local/bin
 - cp /var/log/cloud-init-output.log /root
 - cp /var/log/cloud-init.log /root
