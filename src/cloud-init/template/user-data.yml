@@ -152,7 +152,7 @@ runcmd:
     ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
     echo "$OS_$ARCH"
     wget -O replicated.tar.gz -q "$(curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest | yq '.assets[] | select(.browser_download_url | contains("${OS}_${ARCH}")).browser_download_url')"
-    tar -C /usr/local/bin xzvf replicated.tar.gz replicated
+    tar -C /usr/local/bin -xzvf replicated.tar.gz replicated
   )"
 - curl -L https://carvel.dev/install.sh | bash
 - #@ "curl -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | bash -s {} {}".format(data.values.tanzu.version, data.values.tanzu.os)
