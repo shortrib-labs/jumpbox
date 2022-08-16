@@ -138,7 +138,7 @@ runcmd:
   bash -c "(
     set -x
     export KREW_ROOT=/usr/local/libexec/krew
-    export PATH=${KREW_ROOT/bin:${PATH})
+    export PATH=${KREW_ROOT/bin:${PATH}
     curl -L https://krew.sh | bash
     ls ${KREW_ROOT}
     curl -L https://krew.sh/ns | bash
