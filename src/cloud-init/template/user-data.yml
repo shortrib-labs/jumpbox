@@ -149,7 +149,7 @@ runcmd:
   bash -c "(
     set -x
     cd "$(mktemp -d)"
-    wget -O replicated.tar.gz -q "$(curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest | yq '.assets[] | select(.browser_download_url | contains("linux_amd64").browser_download_url')"
+    wget -O replicated.tar.gz -q "$(curl -s https://api.github.com/repos/replicatedhq/replicated/releases/latest | yq '.assets[] | select(.browser_download_url | contains("linux_amd64")).browser_download_url'"
     tar -C /usr/local/bin -xzvf replicated.tar.gz replicated
   )"
 - curl -L https://carvel.dev/install.sh | bash
