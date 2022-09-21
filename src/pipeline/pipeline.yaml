@@ -297,6 +297,8 @@ jobs:
   - get: version
     passed:
     - plan-instance 
+  - get: repave
+    trigger: true
   - task: deploy-instance
     config:
       platform: linux
