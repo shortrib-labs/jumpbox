@@ -246,7 +246,6 @@ jobs:
 - name: plan-instance
   plan:
   - get: source
-    trigger: true
     passed:
     - create-image
   - get: ova
@@ -254,7 +253,6 @@ jobs:
     passed:
     - create-image 
   - get: version
-    trigger: true
     passed:
     - create-image 
   - task: plan-instance
@@ -287,17 +285,18 @@ jobs:
 
 - name: deploy-instance
   plan:
+  - get: repave
+    trigger: true
   - get: source
     passed:
     - plan-instance
   - get: ova
+    trigger: true
     passed:
     - plan-instance 
   - get: version
     passed:
     - plan-instance 
-  - get: repave
-    trigger: true
   - task: deploy-instance
     config:
       platform: linux
