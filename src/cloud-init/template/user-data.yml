@@ -68,7 +68,7 @@ packages:
 - silversearcher-ag
 - sipcalc
 - skopeo
-- gcloud
+- google-cloud-cli
 
 # install snaps on first boot
 snap:
