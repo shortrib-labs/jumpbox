@@ -22,5 +22,6 @@ hashicorp: #@ data.values.hashicorp
 tailscale: #@ data.values.tailscale
 github: #@ data.values.github
 docker: #@ data.values.docker
+gcloud: #@ data.values.gcloud
 
 tanzu: #@ data.values.tanzu

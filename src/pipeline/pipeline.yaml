@@ -59,6 +59,7 @@ generate-user-data:
       TAILSCALE_APT: ((tailscale))
       GITHUB_CLI_APT: ((github))
       DOCKER_APT: ((docker))
+      GCLOUD_APT: ((gcloud))
       TANZU: ((tanzu))
     run:
       path: bash
@@ -75,6 +76,7 @@ generate-user-data:
             --data-value-yaml tailscale="${TAILSCALE_APT}" \
             --data-value-yaml github="${GITHUB_CLI_APT}" \
             --data-value-yaml docker="${DOCKER_APT}" \
+            --data-value-yaml gcloud="${GCLOUD_APT}" \
             --data-value-yaml tanzu="${TANZU}" \
           >> user-data/user-data.yml
 

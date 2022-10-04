@@ -36,7 +36,6 @@ apt:
       source: #@ data.values.docker.repository
       key: #@ data.values.docker.pgp_key
 
-
 ## Update apt database and upgrade packages on first boot
 package_update: true
 package_upgrade: true
@@ -77,6 +76,7 @@ snap:
   - snap install certbot --classic
   - snap set certbot trust-plugin-with-root=ok
   - snap install certbot-dns-google
+  - snap install google-cloud-cli --classic
 
 groups:
 - ssher
