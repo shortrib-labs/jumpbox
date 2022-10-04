@@ -45,11 +45,7 @@ packages:
 - open-vm-tools
 - ca-certificates
 - curl
-- docker-ce
-- docker-ce-rootless-extras
 - zsh
-- docker-ce
-- podman
 - xz-utils
 - direnv
 - neovim
@@ -64,6 +60,7 @@ packages:
 - silversearcher-ag
 - sipcalc
 - skopeo
+- containerd.io
 
 # install snaps on first boot
 snap:
@@ -133,6 +130,13 @@ write_files:
   owner: root:root
 
 runcmd:
+- |
+  bash -c "(
+    set -x
+    cd "$(mktemp -d)"
+    wget -O nerdctl.tar.gz -q $(curl -s https://api.github.com/repos/containerd/nerdctl/releases/latest | yq '.assets[] | select(.browser_download_url | test(".*full.*-linux-amd64.tar.gz$")).browser_download_url')
+    tar -C /usr/local -tzvf nerdctl.tar.gz
+  )"
 - curl https://kots.io/install | bash
 - |
   bash -c "(
