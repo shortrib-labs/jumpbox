@@ -60,6 +60,7 @@ packages:
 - silversearcher-ag
 - sipcalc
 - skopeo
+- rootlesskit
 
 # install snaps on first boot
 snap:
