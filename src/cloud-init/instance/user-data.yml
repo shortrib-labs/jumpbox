@@ -30,7 +30,7 @@ network:
       dhcp4: true
 
 mounts:
-- [ sdb, /home ]
+- [ sdb1, /home ]
 
 users:
 - default
