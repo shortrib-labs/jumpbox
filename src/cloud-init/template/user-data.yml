@@ -32,9 +32,6 @@ apt:
     github:
       source: #@ data.values.github.repository
       key: #@ data.values.github.pgp_key
-    docker:
-      source: #@ data.values.docker.repository
-      key: #@ data.values.docker.pgp_key
 
 ## Update apt database and upgrade packages on first boot
 package_update: true
